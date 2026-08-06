@@ -1,0 +1,43 @@
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+def _require_env(name: str) -> str:
+    value = os.environ.get(name)
+    if not value:
+        raise RuntimeError(f"Missing required environment variable: {name}")
+    return value
+
+
+def get_supabase_client():
+    """Lazily construct the Supabase client so importing this module never
+    requires credentials (e.g. when only running --help)."""
+    from supabase import create_client
+
+    return create_client(
+        _require_env("SUPABASE_URL"),
+        _require_env("SUPABASE_SERVICE_ROLE_KEY"),
+    )
+
+
+def get_analyzer_llm():
+    """Lazily construct the Claude chat model used for workload analysis."""
+    from langchain_anthropic import ChatAnthropic
+
+    model_name = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-5")
+    return ChatAnthropic(
+        model=model_name,
+        api_key=_require_env("ANTHROPIC_API_KEY"),
+        temperature=0,
+    )
+
+
+def get_serper_api_key() -> str:
+    return _require_env("SERPER_API_KEY")
+
+
+def get_jina_api_key() -> str | None:
+    return os.environ.get("JINA_API_KEY")
