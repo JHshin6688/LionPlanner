@@ -13,10 +13,42 @@ def run_course(course: Course, force_refresh: bool = False) -> None:
     course_id = course.course_id
     course_title = course.title
     instructor = course.instructor
+    department = course.department
     credits = course.credits
     course_level = course.course_level
     days = course.days
     time = course.time
+
+    days_list = days.split() if days else []
+    start_time, end_time = time.split(" - ") if time else ("", "")
+    time_list = [start_time, end_time]
+
+    day_mapping = {
+        "Mo": "Mon",
+        "Tu": "Tue",
+        "We": "Wed",
+        "Th": "Thu",
+        "Fr": "Fri",
+        "Sa": "Sat",
+        "Su": "Sun"
+    }
+
+    # "11:40am" -> 11:40, "2:10pm" -> 14:10
+    def convert_time_to_24h_format(time_str: str) -> str:
+        if not time_str:
+            return ""
+        time_part, period = time_str[:-2], time_str[-2:]
+        hour, minute = map(int, time_part.split(":"))
+        if period.lower() == "pm" and hour != 12:
+            hour += 12
+        elif period.lower() == "am" and hour == 12:
+            hour = 0
+        return f"{hour:02}:{minute:02}"
+    
+    days_list = [day_mapping.get(day, day) for day in days_list]
+    time_list = [convert_time_to_24h_format(time) for time in time_list]
+
+    schedule_time = [{"day": day, "start": time_list[0], "end": time_list[1]} for day in days_list]
 
     print(f"[{course_id}] Searching for syllabus and reviews...")
     syllabus_urls = find_syllabus_urls(course_id, course_title, instructor)
@@ -47,9 +79,10 @@ def run_course(course: Course, force_refresh: bool = False) -> None:
         {
             "course_title": course_title,
             "instructor_name": instructor,
+            "department": department,
             "credits": credits,
             "course_level": course_level,
-            "schedule_time": {"days": days, "time": time},
+            "schedule_time": schedule_time,
             "raw_syllabus": raw_syllabus,
             "raw_reviews": raw_reviews,
             "syllabus_hash": new_syllabus_hash,
