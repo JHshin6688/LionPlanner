@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import type { Course } from '../types/course'
 import type { Filters } from '../types/filters'
 import { CourseBlock } from './CourseBlock'
+import { CourseHoverCard } from './CourseHoverCard'
 import { FilterPanel } from './FilterPanel'
 
 interface CourseListPanelProps {
@@ -22,6 +24,8 @@ export function CourseListPanel({
   onHoverCourse,
   isLoading,
 }: CourseListPanelProps) {
+  const [hoverAnchor, setHoverAnchor] = useState<{ course: Course; rect: DOMRect } | null>(null)
+
   return (
     <div className="flex h-full w-80 shrink-0 flex-col border-r border-slate-200 bg-slate-50">
       <FilterPanel filters={filters} onChange={onFiltersChange} />
@@ -37,12 +41,19 @@ export function CourseListPanel({
               course={course}
               isAdded={scheduledCourseIds.has(course.id)}
               isHovered={hoveredCourseId === course.id}
-              onHoverStart={() => onHoverCourse(course.id)}
-              onHoverEnd={() => onHoverCourse(null)}
+              onHoverStart={(rect) => {
+                onHoverCourse(course.id)
+                setHoverAnchor({ course, rect })
+              }}
+              onHoverEnd={() => {
+                onHoverCourse(null)
+                setHoverAnchor(null)
+              }}
             />
           ))}
         </div>
       </div>
+      {hoverAnchor && <CourseHoverCard course={hoverAnchor.course} anchorRect={hoverAnchor.rect} />}
     </div>
   )
 }

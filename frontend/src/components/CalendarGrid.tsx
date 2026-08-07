@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { DAY_CODES, type Course } from '../types/course'
 import {
   CALENDAR_END_HOUR,
@@ -35,6 +36,8 @@ export function CalendarGrid({
   onDropCourse,
   onRemoveCourse,
 }: CalendarGridProps) {
+  const [hoveredPlacedCourseId, setHoveredPlacedCourseId] = useState<string | null>(null)
+
   return (
     <div className="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
       {/* Horizontal scroll wraps header + grid together so day columns never get crushed on narrow windows. */}
@@ -105,9 +108,15 @@ export function CalendarGrid({
                     key={`${course.id}-${i}`}
                     type="button"
                     onClick={() => onRemoveCourse(course.id)}
+                    onMouseEnter={() => setHoveredPlacedCourseId(course.id)}
+                    onMouseLeave={() => setHoveredPlacedCourseId(null)}
                     title={`${course.course_id} · ${course.course_title} — click to remove`}
                     style={sessionToGridStyle(session)}
-                    className="absolute inset-x-1 z-0 overflow-hidden rounded-md border border-indigo-300 bg-indigo-100 p-1 text-left text-indigo-900 shadow-sm transition hover:border-red-300 hover:bg-red-50"
+                    className={`absolute inset-x-1 z-0 overflow-hidden rounded-md border p-1 text-left text-indigo-900 shadow-sm transition ${
+                      hoveredPlacedCourseId === course.id
+                        ? 'border-red-300 bg-red-50'
+                        : 'border-indigo-300 bg-indigo-100'
+                    }`}
                   >
                     <p className="truncate text-[11px] font-semibold">{course.course_id}</p>
                     <p className="line-clamp-1 text-[10px] leading-tight">{course.course_title}</p>

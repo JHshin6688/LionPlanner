@@ -6,7 +6,7 @@ interface CourseBlockProps {
   course: Course
   isAdded: boolean
   isHovered: boolean
-  onHoverStart: () => void
+  onHoverStart: (rect: DOMRect) => void
   onHoverEnd: () => void
 }
 
@@ -18,7 +18,7 @@ export function CourseBlock({ course, isAdded, isHovered, onHoverStart, onHoverE
         e.dataTransfer.setData(COURSE_DRAG_MIME, course.id)
         e.dataTransfer.effectAllowed = 'copy'
       }}
-      onMouseEnter={onHoverStart}
+      onMouseEnter={(e) => onHoverStart(e.currentTarget.getBoundingClientRect())}
       onMouseLeave={onHoverEnd}
       className={`rounded-lg border p-3 transition ${
         isAdded

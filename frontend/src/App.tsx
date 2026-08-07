@@ -14,8 +14,12 @@ function App() {
   const [hoveredCourseId, setHoveredCourseId] = useState<string | null>(null)
   const [scheduledCourses, setScheduledCourses] = useState<Course[]>([])
 
-  const filteredCourses = useMemo(() => applyFilters(courses, filters), [courses, filters])
   const scheduledCourseIds = useMemo(() => new Set(scheduledCourses.map((c) => c.id)), [scheduledCourses])
+  const filteredCourses = useMemo(() => {
+    const filtered = applyFilters(courses, filters)
+    // Added courses are pinned to the top of the scrollable list.
+    return [...filtered].sort((a, b) => Number(scheduledCourseIds.has(b.id)) - Number(scheduledCourseIds.has(a.id)))
+  }, [courses, filters, scheduledCourseIds])
   const hoveredCourse = useMemo(
     () => courses.find((c) => c.id === hoveredCourseId) ?? null,
     [courses, hoveredCourseId]
