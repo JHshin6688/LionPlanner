@@ -17,7 +17,7 @@ export function useCourses() {
       if (error) {
         setError(error.message)
       } else {
-        setCourses((data ?? []) as Course[])
+        setCourses((data ?? []).map((course) => ({ ...course, course_title: course.course_title.toUpperCase()})) as Course[])
       }
       setIsLoading(false)
     }

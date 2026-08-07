@@ -17,7 +17,7 @@ export function WorkloadPanel({ scheduledCourses }: WorkloadPanelProps) {
   }))
 
   return (
-    <div className="flex h-full w-80 shrink-0 flex-col border-l border-slate-200 bg-slate-50 p-4">
+    <div className="hidden h-full w-80 shrink-0 flex-col border-l border-slate-200 bg-slate-50 p-4 xl:flex">
       <h2 className="text-sm font-semibold text-slate-800">Workload Analysis</h2>
       <p className="mt-0.5 text-xs text-slate-500">
         {scheduledCourses.length === 0

@@ -20,6 +20,20 @@ export function formatMinutesAsTime(minutes: number): string {
   return `${h12}:${String(m).padStart(2, '0')} ${period}`
 }
 
+/** 630 -> "10:30am", 660 -> "11am" (no colon when on the hour) */
+function formatClockTime(minutes: number): string {
+  const h = Math.floor(minutes / 60)
+  const m = Math.round(minutes % 60)
+  const period = h < 12 ? 'am' : 'pm'
+  const h12 = h % 12 === 0 ? 12 : h % 12
+  return m === 0 ? `${h12}${period}` : `${h12}:${String(m).padStart(2, '0')}${period}`
+}
+
+/** e.g. "11am - 2pm", "10:10am - 11:25am" */
+export function formatSessionTimeRange(session: ScheduleSession): string {
+  return `${formatClockTime(timeToMinutes(session.start))} - ${formatClockTime(timeToMinutes(session.end))}`
+}
+
 /** Vertical position (top px, height px) of a session within the 8am-6pm grid. */
 export function sessionToGridStyle(session: ScheduleSession) {
   const start = Math.max(timeToMinutes(session.start), CALENDAR_START_HOUR * 60)
