@@ -17,7 +17,8 @@ export function FilterPanel({ filters, onChange }: FilterPanelProps) {
   }
 
   const toggleDay = (day: (typeof DAY_CODES)[number]) => {
-    onChange({ ...filters, day: filters.day === day ? null : day })
+    const next = filters.days.includes(day) ? filters.days.filter((d) => d !== day) : [...filters.days, day]
+    onChange({ ...filters, days: next })
   }
 
   return (
@@ -74,7 +75,7 @@ export function FilterPanel({ filters, onChange }: FilterPanelProps) {
               type="button"
               onClick={() => toggleDay(day)}
               className={`w-10 rounded-full border py-1 text-xs font-medium transition ${
-                filters.day === day
+                filters.days.includes(day)
                   ? 'border-indigo-600 bg-indigo-600 text-white'
                   : 'border-slate-300 bg-white text-slate-600 hover:border-indigo-400'
               }`}

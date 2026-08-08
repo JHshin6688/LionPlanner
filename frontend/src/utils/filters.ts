@@ -12,11 +12,11 @@ export function applyFilters(courses: Course[], filters: Filters): Course[] {
       return false
     }
 
-    const relevantSessions = filters.day
-      ? course.schedule_time.filter((s) => s.day === filters.day)
+    const relevantSessions = filters.days.length > 0
+      ? course.schedule_time.filter((s) => filters.days.includes(s.day))
       : course.schedule_time
 
-    if (filters.day && relevantSessions.length === 0) {
+    if (filters.days.length > 0 && relevantSessions.length === 0) {
       return false
     }
 
@@ -27,7 +27,7 @@ export function applyFilters(courses: Course[], filters: Filters): Course[] {
 
     const [rangeStart, rangeEnd] = filters.timeRange
     return relevantSessions.some(
-      (s) => timeToMinutes(s.start) < rangeEnd && rangeStart < timeToMinutes(s.end)
+      (s) => timeToMinutes(s.start) >= rangeStart && timeToMinutes(s.end) <= rangeEnd
     )
   })
 }
