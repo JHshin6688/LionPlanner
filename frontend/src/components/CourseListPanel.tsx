@@ -4,11 +4,13 @@ import type { Filters } from '../types/filters'
 import { CourseBlock } from './CourseBlock'
 import { CourseHoverCard } from './CourseHoverCard'
 import { FilterPanel } from './FilterPanel'
+import { TotalCreditsCard } from './TotalCreditsCard'
 
 interface CourseListPanelProps {
   courses: Course[]
   filters: Filters
   onFiltersChange: (filters: Filters) => void
+  scheduledCourses: Course[]
   scheduledCourseIds: Set<string>
   hoveredCourseId: string | null
   onHoverCourse: (courseId: string | null) => void
@@ -19,6 +21,7 @@ export function CourseListPanel({
   courses,
   filters,
   onFiltersChange,
+  scheduledCourses,
   scheduledCourseIds,
   hoveredCourseId,
   onHoverCourse,
@@ -29,6 +32,7 @@ export function CourseListPanel({
   return (
     <div className="flex h-full w-80 shrink-0 flex-col border-r border-slate-200 bg-slate-50">
       <FilterPanel filters={filters} onChange={onFiltersChange} />
+      <TotalCreditsCard scheduledCourses={scheduledCourses} />
       <div className="flex-1 overflow-y-auto p-3">
         {isLoading && <p className="p-4 text-center text-sm text-slate-400">Loading courses...</p>}
         {!isLoading && courses.length === 0 && (

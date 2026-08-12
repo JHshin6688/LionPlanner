@@ -52,6 +52,7 @@ function App() {
           courses={filteredCourses}
           filters={filters}
           onFiltersChange={setFilters}
+          scheduledCourses={scheduledCourses}
           scheduledCourseIds={scheduledCourseIds}
           hoveredCourseId={hoveredCourseId}
           onHoverCourse={setHoveredCourseId}
