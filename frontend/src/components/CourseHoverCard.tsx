@@ -17,9 +17,11 @@ const SHORT_LABELS: Record<string, string> = {
 interface CourseHoverCardProps {
   course: Course
   anchorRect: DOMRect
+  onMouseEnter: () => void
+  onMouseLeave: () => void
 }
 
-export function CourseHoverCard({ course, anchorRect }: CourseHoverCardProps) {
+export function CourseHoverCard({ course, anchorRect, onMouseEnter, onMouseLeave }: CourseHoverCardProps) {
   const overflowsRight = anchorRect.right + GAP + CARD_WIDTH > window.innerWidth
   const left = overflowsRight ? anchorRect.left - GAP - CARD_WIDTH : anchorRect.right + GAP
   const top = Math.max(8, Math.min(anchorRect.top, window.innerHeight - 220))
@@ -35,8 +37,10 @@ export function CourseHoverCard({ course, anchorRect }: CourseHoverCardProps) {
 
   return createPortal(
     <div
-      className="pointer-events-none fixed z-50 rounded-xl border border-slate-200 bg-white p-4 shadow-lg"
+      className="fixed z-50 rounded-xl border border-slate-200 bg-white p-4 shadow-lg"
       style={{ top, left, width: CARD_WIDTH }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <p className="text-sm font-semibold text-slate-900">{course.course_title}</p>
       <p className="mt-0.5 text-xs text-slate-500">{detailParts.join(' • ')}</p>
@@ -49,7 +53,26 @@ export function CourseHoverCard({ course, anchorRect }: CourseHoverCardProps) {
           />
         ))}
       </div>
+      <div className="mt-3 flex items-center gap-4 border-t border-slate-100 pt-3 text-xs font-medium">
+        <HoverCardLink href={course.syllabus_url}>Syllabus</HoverCardLink>
+        <HoverCardLink href={course.review_url}>Course Review</HoverCardLink>
+      </div>
     </div>,
     document.body
+  )
+}
+
+function HoverCardLink({ href, children }: { href: string | null; children: string }) {
+  if (!href) {
+    return (
+      <span className="text-slate-300" title="Not available">
+        {children}
+      </span>
+    )
+  }
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+      {children}
+    </a>
   )
 }

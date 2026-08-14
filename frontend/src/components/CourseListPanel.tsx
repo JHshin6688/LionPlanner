@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Course } from '../types/course'
 import type { Filters } from '../types/filters'
 import { CourseBlock } from './CourseBlock'
@@ -28,6 +28,29 @@ export function CourseListPanel({
   isLoading,
 }: CourseListPanelProps) {
   const [hoverAnchor, setHoverAnchor] = useState<{ course: Course; rect: DOMRect } | null>(null)
+  const closeTimeoutRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current !== null) window.clearTimeout(closeTimeoutRef.current)
+    }
+  }, [])
+
+  const cancelClose = () => {
+    if (closeTimeoutRef.current !== null) {
+      window.clearTimeout(closeTimeoutRef.current)
+      closeTimeoutRef.current = null
+    }
+  }
+
+  // Small delay so moving the mouse from the block to the card (across the gap
+  // between them) doesn't close the card before the cursor arrives.
+  const scheduleClose = () => {
+    closeTimeoutRef.current = window.setTimeout(() => {
+      onHoverCourse(null)
+      setHoverAnchor(null)
+    }, 150)
+  }
 
   return (
     <div className="flex h-full w-80 shrink-0 flex-col border-r border-slate-200 bg-slate-50">
@@ -46,18 +69,23 @@ export function CourseListPanel({
               isAdded={scheduledCourseIds.has(course.id)}
               isHovered={hoveredCourseId === course.id}
               onHoverStart={(rect) => {
+                cancelClose()
                 onHoverCourse(course.id)
                 setHoverAnchor({ course, rect })
               }}
-              onHoverEnd={() => {
-                onHoverCourse(null)
-                setHoverAnchor(null)
-              }}
+              onHoverEnd={scheduleClose}
             />
           ))}
         </div>
       </div>
-      {hoverAnchor && <CourseHoverCard course={hoverAnchor.course} anchorRect={hoverAnchor.rect} />}
+      {hoverAnchor && (
+        <CourseHoverCard
+          course={hoverAnchor.course}
+          anchorRect={hoverAnchor.rect}
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
+        />
+      )}
     </div>
   )
 }
