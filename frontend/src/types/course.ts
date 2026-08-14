@@ -35,9 +35,12 @@ export interface Course {
   course_id: string
   course_title: string
   instructor_name: string
+  department: string
   credits: number
   course_level: number
   schedule_time: ScheduleSession[]
+  syllabus_url: string | null
+  review_url: string | null
   raw_syllabus: string | null
   raw_reviews: string | null
   syllabus_hash: string | null

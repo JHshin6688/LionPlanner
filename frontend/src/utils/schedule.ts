@@ -70,8 +70,3 @@ export function courseConflictsWithSchedule(course: Course, scheduled: Course[])
       course.schedule_time.some((s1) => placed.schedule_time.some((s2) => sessionsOverlap(s1, s2)))
   )
 }
-
-/** e.g. "COMS4118W" -> "COMS", "COMS-W3157" -> "COMS" */
-export function getDepartment(courseId: string): string {
-  return courseId.match(/^[A-Za-z]+/)?.[0]?.toUpperCase() ?? ''
-}

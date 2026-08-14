@@ -1,6 +1,5 @@
 import type { Course } from '../types/course'
 import { DEPARTMENTS } from '../types/filters'
-import { getDepartment } from '../utils/schedule'
 
 const SIZE = 76
 const STROKE = 10
@@ -27,7 +26,7 @@ interface TotalCreditsCardProps {
 export function TotalCreditsCard({ scheduledCourses }: TotalCreditsCardProps) {
   const creditsByDept = new Map<string, number>()
   for (const course of scheduledCourses) {
-    const dept = getDepartment(course.course_id)
+    const dept = course.department.toUpperCase()
     const key = dept in DEPARTMENT_COLORS ? dept : 'Other'
     creditsByDept.set(key, (creditsByDept.get(key) ?? 0) + course.credits)
   }

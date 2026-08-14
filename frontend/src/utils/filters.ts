@@ -1,10 +1,10 @@
 import type { Course } from '../types/course'
 import type { Filters } from '../types/filters'
-import { getDepartment, timeToMinutes } from './schedule'
+import { timeToMinutes } from './schedule'
 
 export function applyFilters(courses: Course[], filters: Filters): Course[] {
   return courses.filter((course) => {
-    if (filters.departments.length > 0 && !filters.departments.includes(getDepartment(course.course_id))) {
+    if (filters.departments.length > 0 && !filters.departments.includes(course.department.toUpperCase())) {
       return false
     }
 
