@@ -35,6 +35,19 @@ def get_analyzer_llm():
     )
 
 
+def get_digest_llm():
+    """Lazily construct the cheap Claude model used to compress raw syllabus/review
+    markdown into a workload-relevant digest before the analyzer prompts see it."""
+    from langchain_anthropic import ChatAnthropic
+
+    model_name = os.environ.get("ANTHROPIC_DIGEST_MODEL", "claude-haiku-4-5-20251001")
+    return ChatAnthropic(
+        model=model_name,
+        api_key=_require_env("ANTHROPIC_API_KEY"),
+        temperature=0,
+    )
+
+
 def get_serper_api_key() -> str:
     return _require_env("SERPER_API_KEY")
 

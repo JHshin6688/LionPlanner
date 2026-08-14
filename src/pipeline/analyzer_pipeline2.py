@@ -4,6 +4,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableParallel
 
 from src.config import get_analyzer_llm
+from src.pipeline.digest import build_workload_digest
 from src.schemas.workload import DimensionScore, WorkloadAnalysis2, WorkloadScores, WorkloadSummary
 
 RULES_BLOCK = """Rules:
@@ -14,33 +15,27 @@ RULES_BLOCK = """Rules:
 
 # Per-category anchor point (unchanged from the original single-prompt anchors)
 # and a fabricated one-shot example used to calibrate that category in isolation.
+
+# example_syllabus/example_reviews below are the actual output of build_workload_digest()
+# it's recommended to process the raw syllabus/review data with build_workload_digest(),
+# so that few-shot example matches the real input distribution the model sees at inference time.å
 CATEGORY_CONFIG = {
     "exam": {
         "display_name": "Exam",
         "anchor": "Exam Score 90+: Heavy theory courses with the majority of the grade dependent on midterm/final exams.",
         "example_course": "Theoretical Foundations of Computing (fabricated example, not a real course)",
         "example_syllabus": (
-            "### Grading Breakdown\n"
-            "- Midterm Exam: 30%\n"
-            "- Final Exam: 35%\n"
-            "- Weekly Problem Sets: 20%\n"
-            "- Participation: 15%\n\n"
-            "**Exam Policy**: Both exams are closed-book, closed-note, and cover all lecture material "
+            "Grading Breakdown: Midterm Exam 30%, Final Exam 35%, Weekly Problem Sets 20%, "
+            "Participation 15%. Both exams are closed-book, closed-note, and cover all lecture material "
             "cumulatively. No makeup exams offered except for documented emergencies."
         ),
         "example_reviews": (
-            "## AI-Generated Summary\n"
             "Students consistently describe the exams as the deciding factor in this class. Both are "
             "closed-book and cumulative, and reviewers note that strong problem-set performance does not "
-            "offset a weak exam grade.\n\n"
-            "## Most Agreed Review\n"
-            "Theoretical Foundations of Computing · Nov 2024\n\n"
-            "The exams are everything in this class. Homework barely moves the needle - I got full marks "
-            "on every problem set but still ended up with a B because I choked on the final. Study the "
-            "practice exams religiously.\n\n"
-            "Workload\n"
-            "Midterm 30%, Final 35%, problem sets only 20%. Both exams are closed-book and cover everything "
-            "cumulatively."
+            "offset a weak exam grade. The exams are everything in this class. Homework barely moves the "
+            "needle - I got full marks on every problem set but still ended up with a B because I choked "
+            "on the final. Study the practice exams religiously. Midterm 30%, Final 35%, problem sets only "
+            "20%. Both exams are closed-book and cover everything cumulatively."
         ),
         "example_output": {
             "score": 93,
@@ -73,21 +68,16 @@ CATEGORY_CONFIG = {
             "OS subsystem."
         ),
         "example_reviews": (
-            "## AI-Generated Summary\n"
             "Reviewers agree the six C projects define the workload of this course. Multiple reviews "
             "describe spending entire weekends debugging low-level bugs, with the virtual memory and file "
-            "system projects singled out as the hardest.\n\n"
-            "## Most Agreed Review\n"
-            "Systems Programming Lab · Mar 2025\n\n"
-            "Six C projects back to back, each one nastier than the last. The virtual memory manager alone "
-            "ate two full weekends of my life chasing a segfault.\n\n"
-            "Workload\n"
+            "system projects singled out as the hardest. Six C projects back to back, each one nastier than "
+            "the last. The virtual memory manager alone ate two full weekends of my life chasing a segfault. "
             "Six cumulative C projects (P1-P6), roughly 30-40 hours each once you're deep into debugging."
         ),
         "example_output": {
             "score": 95,
             "evidence_quotes": [
-                "Six programming projects (P1-P6), each requiring a full C implementation of a core OS subsystem",
+                "Each project builds on the previous one and requires a full working C implementation of a core OS subsystem.",
                 "The virtual memory manager alone ate two full weekends of my life chasing a segfault.",
             ],
             "analysis": (
@@ -102,28 +92,20 @@ CATEGORY_CONFIG = {
         "anchor": "Team Project Score 90+: Semester-long team capstone with weekly deliverables.",
         "example_course": "Applied Software Studio (fabricated example, not a real course)",
         "example_syllabus": (
-            "### Final Team Project (40% of grade)\n"
-            "- Teams of 4 design, build, and deploy a full-stack application over 10 weeks\n"
-            "- **Weekly deliverables**: sprint plan, sprint review, and demo to a simulated client\n"
-            "- Mandatory on-call rotation during the final two weeks of the semester"
+            "Final Team Project (40% of grade): Teams of 4 design, build, and deploy a full-stack "
+            "application over 10 weeks. Weekly deliverables: sprint plan, sprint review, and demo to a "
+            "simulated client. Mandatory on-call rotation during the final two weeks of the semester."
         ),
         "example_reviews": (
-            "## AI-Generated Summary\n"
-            "The consensus across reviews is that the semester-long team capstone dominates the course. "
-            "Students repeatedly mention weekly sprint deliverables and a simulated client demo as the "
-            "main time sink, more than any individual assignment.\n\n"
-            "## Most Agreed Review\n"
-            "Applied Software Studio · May 2025\n\n"
             "This class is basically a part-time job for 10 weeks. Weekly sprint reviews with a 'client', "
-            "constant Slack pings from teammates, and a mandatory on-call week at the end.\n\n"
-            "Workload\n"
-            "Team capstone (40% of grade), 4-person teams, weekly graded sprint deliverables plus a "
-            "two-week on-call rotation before the final demo."
+            "constant Slack pings from teammates, and a mandatory on-call week at the end. Team capstone "
+            "(40% of grade), 4-person teams, weekly graded sprint deliverables plus a two-week on-call "
+            "rotation before the final demo."
         ),
         "example_output": {
             "score": 91,
             "evidence_quotes": [
-                "teams of 4 design, build, and deploy a full-stack application over 10 weeks",
+                "Teams of 4 design, build, and deploy a full-stack application over 10 weeks",
                 "This class is basically a part-time job for 10 weeks.",
             ],
             "analysis": (
@@ -138,28 +120,22 @@ CATEGORY_CONFIG = {
         "anchor": "Reading/Essay Score 90+: >=150 pages/week of reading with graded response essays.",
         "example_course": "Seminar in Critical Theory (fabricated example, not a real course)",
         "example_syllabus": (
-            "### Weekly Readings & Responses\n"
-            "- Two full academic papers assigned each week (~80-100 pages total)\n"
-            "- 1500-word graded response essay due before each class discussion\n"
-            "- Essays are graded on close reading and original argumentation, not summary"
+            "Two full academic papers assigned each week (~80-100 pages total). 1500-word graded response "
+            "essay due before each class discussion. Essays are graded on close reading and original "
+            "argumentation, not summary."
         ),
         "example_reviews": (
-            "## AI-Generated Summary\n"
             "Reviewers describe the reading load as the most demanding part of the course, with two dense "
             "papers assigned weekly and a graded response essay due every week. Several note that skimming "
-            "is not viable if you want a good essay grade.\n\n"
-            "## Most Agreed Review\n"
-            "Seminar in Critical Theory · Oct 2025\n\n"
-            "150 pages a week, every week, plus a 1500-word essay that actually gets graded closely. You "
-            "cannot fake your way through this one.\n\n"
-            "Workload\n"
-            "Two papers a week (~80-100 pages total) and a weekly 1500-word response essay graded on "
-            "argumentation, not summary."
+            "is not viable if you want a good essay grade. 150 pages a week, every week, plus a 1500-word "
+            "essay that actually gets graded closely. You cannot fake your way through this one. Two papers "
+            "a week (~80-100 pages total) and a weekly 1500-word response essay graded on argumentation, "
+            "not summary."
         ),
         "example_output": {
             "score": 90,
             "evidence_quotes": [
-                "reading two full academic papers (~80-100 pages total) plus a 1500-word graded response essay",
+                "Two full academic papers assigned each week (~80-100 pages total).",
                 "150 pages a week, every week, plus a 1500-word essay that actually gets graded closely.",
             ],
             "analysis": (
@@ -174,28 +150,19 @@ CATEGORY_CONFIG = {
         "anchor": "Lab/Experiment Score 90+: >=6 hours/week of mandatory in-person lab or hardware work.",
         "example_course": "Applied Circuits Lab (fabricated example, not a real course)",
         "example_syllabus": (
-            "### Lab Requirements\n"
-            "- **Scheduled lab session**: 3 hours/week, mandatory attendance\n"
-            "- **Open lab time**: an additional 3-4 hours/week required to complete hardware builds\n"
-            "- Lab notebooks and circuit boards are graded weekly"
+            "**Scheduled lab session**: 3 hours/week, mandatory attendance. **Open lab time**: an "
+            "additional 3-4 hours/week required to complete hardware builds. Lab notebooks and circuit "
+            "boards are graded weekly."
         ),
         "example_reviews": (
-            "## AI-Generated Summary\n"
-            "Multiple reviews point to the mandatory lab hours as the defining workload factor. Between "
-            "the scheduled session and the extra open-lab time needed to finish the hardware builds, "
-            "students report spending well over 6 hours a week in the lab.\n\n"
-            "## Most Agreed Review\n"
-            "Applied Circuits Lab · Feb 2025\n\n"
             "Between the 3-hour scheduled lab and the extra open-lab hours to actually finish the circuit "
-            "board, you're looking at 6+ hours a week minimum in that lab.\n\n"
-            "Workload\n"
-            "Mandatory 3-hour lab session plus 3-4 required open-lab hours weekly to complete hardware "
-            "builds; notebooks graded weekly."
+            "board, you're looking at 6+ hours a week minimum in that lab. Mandatory 3-hour lab session "
+            "plus 3-4 required open-lab hours weekly to complete hardware builds; notebooks graded weekly."
         ),
         "example_output": {
             "score": 92,
             "evidence_quotes": [
-                "Weekly 3-hour mandatory lab sessions plus an additional 3-4 hours of required open-lab time",
+                "an additional 3-4 hours/week required to complete hardware builds",
                 "you're looking at 6+ hours a week minimum in that lab.",
             ],
             "analysis": (
@@ -223,24 +190,24 @@ def _category_example_human(config: dict) -> str:
             Refer to this course's syllabus and to student reviews about the instructor teaching this course when analyzing the {config["display_name"]} workload.
             Within the reviews, prioritize the "AI-Generated Summary" and "Most Agreed Review" sections as the most reliable signal of the instructor's typical workload.
 
-            ## Raw Syllabus (Markdown)
+            ## Syllabus
             {config["example_syllabus"]}
 
-            ## Raw Student Reviews (Markdown)
+            ## Reviews
             {config["example_reviews"]}
 
             Analyze the {config["display_name"]} workload dimension for this course and produce the structured output."""
 
 
-CATEGORY_USER_PROMPT = """Course: {{course_id}} - {{course_title}} (Instructor: {{instructor_name}})
+CATEGORY_USER_PROMPT = """Course: {{course_title}}
 
             Refer to this course's syllabus and to student reviews about the instructor teaching this course when analyzing the {display_name} workload.
             Within the reviews, prioritize the "AI-Generated Summary" and "Most Agreed Review" sections as the most reliable signal of the instructor's typical workload.
 
-            ## Raw Syllabus (Markdown)
+            ## Syllabus
             {{raw_syllabus}}
 
-            ## Raw Student Reviews (Markdown)
+            ## Reviews
             {{raw_reviews}}
 
             Analyze the {display_name} workload dimension for this course and produce the structured output."""
@@ -298,14 +265,18 @@ def analyze_course2(
     raw_syllabus: str,
     raw_reviews: str,
 ) -> WorkloadAnalysis2:
+
+    print(f"[{course_id}] Digesting syllabus and reviews...")
+    digest = build_workload_digest(raw_syllabus, raw_reviews)
+
     chain = build_analyzer_chain()
     results = chain.invoke(
         {
             "course_id": course_id,
             "course_title": course_title,
             "instructor_name": instructor_name,
-            "raw_syllabus": raw_syllabus or "(No syllabus text found)",
-            "raw_reviews": raw_reviews or "(No review text found)",
+            "raw_syllabus": digest.syllabus_digest or "(No syllabus text found)",
+            "raw_reviews": digest.review_digest or "(No review text found)",
         }
     )
 

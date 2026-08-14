@@ -13,7 +13,9 @@ const GAP = 3 // small visual gap between ring segments
 const DEPARTMENT_COLORS: Record<string, string> = {
   COMS: '#2a78d6',
   ELEN: '#eb6834',
-  MECE: '#1baf7a',
+  // MECE: '#1baf7a',
+  STAT: '#f5a623',
+  PSYC: '#9b51e0',
 }
 const OTHER_COLOR = '#94a3b8' // slate-400, neutral fallback for any other department
 const TRACK_COLOR = '#e2e8f0' // slate-200
