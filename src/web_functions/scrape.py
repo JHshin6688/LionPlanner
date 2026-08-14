@@ -14,6 +14,7 @@ def scrape_markdown(url: str, timeout: int = 30) -> Optional[str]:
     api_key = get_jina_api_key()
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
+        headers["X-Timeout"] = "20"
 
     try:
         response = requests.get(f"{JINA_READER_BASE}{url}", headers=headers, timeout=timeout)
