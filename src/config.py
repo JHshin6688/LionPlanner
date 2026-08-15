@@ -80,3 +80,6 @@ def get_serper_api_key() -> str:
 
 def get_jina_api_key() -> str | None:
     return os.environ.get("JINA_API_KEY")
+
+def get_firecrawl_api_key() -> str | None:
+    return os.environ.get("FIRECRAWL_API_KEY")

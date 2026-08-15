@@ -12,7 +12,8 @@ _SYLLABUS_BLOCKLIST_KEYWORDS = [
     "accommodation",
     "office hours",
     "contact",
-    "staff"
+    "staff",
+    "assistant"
 ]
 
 _HEADER_RE = re.compile(r"^(#{1,6})\s+.*$", re.MULTILINE)

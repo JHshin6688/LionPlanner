@@ -119,7 +119,7 @@ def run_course2(course: Course2, force_refresh: bool = False) -> None:
 
     schedule_time = [{"day": day, "start": time_list[0], "end": time_list[1]} for day in days_list]
 
-    print(f"[{course_id}] Scraping Markdown via Jina Reader...")
+    print(f"[{course_id}] Scraping Markdown from Syllabus and Review URLs...")
     raw_syllabus = scrape_syllabus([syllabus_url])
     raw_reviews = scrape_reviews([review_url])
 
