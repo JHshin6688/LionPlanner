@@ -10,6 +10,7 @@ export const DEPARTMENTS = [
 ] as const
 
 export interface Filters {
+  titleQuery: string // empty = no title filter
   departments: string[] // empty = all departments
   levelRange: [number, number]
   days: DayCode[] // empty = all days
@@ -20,6 +21,7 @@ export const LEVEL_MIN = 1000
 export const LEVEL_MAX = 9999
 
 export const DEFAULT_FILTERS: Filters = {
+  titleQuery: '',
   departments: [],
   levelRange: [LEVEL_MIN, LEVEL_MAX],
   days: [],

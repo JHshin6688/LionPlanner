@@ -4,6 +4,13 @@ import { timeToMinutes } from './schedule'
 
 export function applyFilters(courses: Course[], filters: Filters): Course[] {
   return courses.filter((course) => {
+    if (
+      filters.titleQuery.trim().length > 0 &&
+      !course.course_title.toLowerCase().includes(filters.titleQuery.trim().toLowerCase())
+    ) {
+      return false
+    }
+
     if (filters.departments.length > 0 && !filters.departments.includes(course.department.toUpperCase())) {
       return false
     }

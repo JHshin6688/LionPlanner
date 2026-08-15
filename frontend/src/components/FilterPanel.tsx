@@ -35,6 +35,17 @@ export function FilterPanel({ filters, onChange }: FilterPanelProps) {
       </div>
 
       <div>
+        <p className="mb-1.5 text-xs font-medium text-slate-500">Course Title</p>
+        <input
+          type="text"
+          value={filters.titleQuery}
+          onChange={(e) => onChange({ ...filters, titleQuery: e.target.value })}
+          placeholder="Search by title..."
+          className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+        />
+      </div>
+
+      <div>
         <p className="mb-1.5 text-xs font-medium text-slate-500">Department</p>
         <div className="flex flex-wrap gap-1.5">
           {DEPARTMENTS.map(({ code, label }) => (
@@ -68,13 +79,13 @@ export function FilterPanel({ filters, onChange }: FilterPanelProps) {
 
       <div>
         <p className="mb-1.5 text-xs font-medium text-slate-500">Day</p>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1">
           {DAY_CODES.map((day) => (
             <button
               key={day}
               type="button"
               onClick={() => toggleDay(day)}
-              className={`w-10 rounded-full border py-1 text-xs font-medium transition ${
+              className={`w-9 rounded-full border py-1 text-xs font-medium transition ${
                 filters.days.includes(day)
                   ? 'border-indigo-600 bg-indigo-600 text-white'
                   : 'border-slate-300 bg-white text-slate-600 hover:border-indigo-400'
