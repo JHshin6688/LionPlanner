@@ -29,3 +29,17 @@ def upsert_course_analysis(course_id: str, data: dict) -> bool:
     }
     client.table("courses").upsert(payload, on_conflict="course_id").execute()
     return True
+
+
+def upsert_degree_path(degree_name: str, fundamental_courses: list, elective_courses: list) -> bool:
+    """Insert or update the degree_path row identified by degree_name with the
+    given fundamental and elective courses."""
+    client = get_supabase_client()
+    payload = {
+        "degree_name": degree_name,
+        "required_courses": fundamental_courses,
+        "elective_courses": elective_courses,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+    client.table("degree_path").upsert(payload, on_conflict="degree_name").execute()
+    return True

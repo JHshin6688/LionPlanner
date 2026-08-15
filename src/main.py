@@ -5,10 +5,11 @@ import csv
 
 from src.web_functions.scrape import scrape_reviews, scrape_syllabus
 from src.web_functions.search import find_review_urls, find_syllabus_urls
-from src.db.supabase_client import get_course_hashes, upsert_course_analysis
+from src.db.supabase_client import get_course_hashes, upsert_course_analysis, upsert_degree_path
 from src.pipeline.analyzer_pipeline import analyze_course
-from src.pipeline.analyzer_pipeline2 import analyze_course2
+from src.pipeline.analyzer_pipeline2 import analyze_course2, build_syllabus_summary
 from src.pipeline.diff_engine import calculate_hash, has_content_changed
+from src.pipeline.embeddings import embed_syllabus_summary
 from src.schemas.course import Course, Course2
 
 def run_course(course: Course, force_refresh: bool = False) -> None:
@@ -138,6 +139,9 @@ def run_course2(course: Course2, force_refresh: bool = False) -> None:
     print(f"[{course_id}] Running LangChain workload analysis...")
     analysis = analyze_course2(course_id, course_title, instructor, raw_syllabus, raw_reviews)
 
+    syllabus_summary = build_syllabus_summary(raw_syllabus)
+    syllabus_summary_embedding = embed_syllabus_summary(syllabus_summary.syllabus_summary)
+
     upsert_course_analysis(
         course_id,
         {
@@ -154,6 +158,8 @@ def run_course2(course: Course2, force_refresh: bool = False) -> None:
             "syllabus_hash": new_syllabus_hash,
             "review_hash": new_review_hash,
             "workload_analysis": analysis.model_dump(),
+            "syllabus_summary": syllabus_summary.syllabus_summary,
+            "syllabus_summary_embedding": syllabus_summary_embedding,
         },
     )
     print(f"[{course_id}] Stored workload analysis in Supabase.")
@@ -168,6 +174,19 @@ def main() -> None:
     )
     args = parser.parse_args()
     courses = []
+    degree_paths = {}
+
+    with open("src/data/degree_path.json", "r", encoding="utf-8") as f:
+        degree_path = json.load(f)
+        for name, paths in degree_path.items():
+            degree_paths[name] = {
+                "fundamental": paths["fundamental"],
+                "electives": paths["electives"]
+            }
+
+    for name, paths in degree_paths.items():
+        upsert_degree_path(name, paths["fundamental"], paths["electives"])
+        print(f"[{name}] Stored degree path in Supabase.")
 
     # with open("src/courses_test.jsonl", "r", encoding="utf-8") as f:
     #     for line in f:

@@ -6,6 +6,8 @@ from langchain_core.runnables import RunnableParallel
 from src.config import get_analyzer_llm
 from src.pipeline.digest import build_workload_digest
 from src.schemas.workload import DimensionScore, WorkloadAnalysis2, WorkloadScores, WorkloadSummary
+from pydantic import BaseModel, Field
+from src.pipeline.content_filters import filter_syllabus_noise
 
 RULES_BLOCK = """Rules:
 1. Base every score strictly on evidence found in the provided syllabus and review text. Never invent facts.
@@ -174,6 +176,13 @@ CATEGORY_CONFIG = {
     },
 }
 
+class SyllabusSummary(BaseModel):
+    syllabus_summary: str = Field(
+        ...,
+        description="Concise summary of what the course covers - key topics, subject matter, and learning "
+        "objectives - based strictly on the syllabus text.",
+    )
+
 
 def _category_system_prompt(config: dict) -> str:
     return f"""You are an expert academic workload analyst for Columbia University courses.
@@ -227,6 +236,25 @@ SUMMARY_USER_PROMPT = """Course: {course_id} - {course_title} (Instructor: {inst
             summary of this course."""
 
 
+SYLLABUS_SUMMARY_SYSTEM_PROMPT = """You summarize what a college course covers, based on its syllabus, for students \
+deciding whether to take it.
+
+Rules:
+1. Base the summary strictly on the provided syllabus text. Never invent, infer, or assume topics, content, \
+or learning objectives that are not stated in the syllabus.
+2. Focus on what the course teaches - the topics, subject matter, and learning objectives - not grading, \
+logistics, or workload details.
+3. Write a few concise sentences of plain prose, not a bullet list of every syllabus line.
+4. If the syllabus text has no identifiable course content (e.g. it's empty or purely logistical), say so \
+plainly instead of guessing."""
+
+SYLLABUS_SUMMARY_USER_PROMPT = """## Syllabus (pre-filtered, Markdown)
+{filtered_syllabus}
+
+Summarize what this course covers, based strictly on the syllabus content above."""
+
+
+
 def build_category_chain(llm, category: str):
     config = CATEGORY_CONFIG[category]
     structured_llm = llm.with_structured_output(DimensionScore)
@@ -256,6 +284,29 @@ def build_analyzer_chain():
     llm = get_analyzer_llm()
     branches = {category: build_category_chain(llm, category) for category in CATEGORY_CONFIG}
     return RunnableParallel(**branches)
+
+
+def build_syllabus_summary_chain():
+    llm = get_analyzer_llm()
+    structured_llm = llm.with_structured_output(SyllabusSummary)
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", SYLLABUS_SUMMARY_SYSTEM_PROMPT),
+            ("human", SYLLABUS_SUMMARY_USER_PROMPT),
+        ]
+    )
+    return prompt | structured_llm
+
+
+def build_syllabus_summary(raw_syllabus: str) -> SyllabusSummary:
+    filtered_syllabus = filter_syllabus_noise(raw_syllabus)
+
+    chain = build_syllabus_summary_chain()
+    return chain.invoke(
+        {
+            "filtered_syllabus": filtered_syllabus or "(No syllabus text found)",
+        }
+    )
 
 
 def analyze_course2(

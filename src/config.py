@@ -24,7 +24,7 @@ def get_supabase_client():
 
 
 def get_analyzer_llm():
-    """Lazily construct the Claude chat model used for workload analysis."""
+    """Lazily construct the Claude chat model used for workload & syllabus analysis."""
     from langchain_anthropic import ChatAnthropic
 
     model_name = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-5")
@@ -45,6 +45,32 @@ def get_digest_llm():
         model=model_name,
         api_key=_require_env("ANTHROPIC_API_KEY"),
         temperature=0,
+    )
+
+
+def get_agent_llm():
+    """Lazily construct the Claude chat model used by the Ask LionPlanner
+    multi-agent graph (src/agents/)."""
+    from langchain_anthropic import ChatAnthropic
+
+    model_name = os.environ.get("ANTHROPIC_AGENT_MODEL", os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-5"))
+    return ChatAnthropic(
+        model=model_name,
+        api_key=_require_env("ANTHROPIC_API_KEY"),
+        temperature=0,
+    )
+
+
+def get_embedding_model():
+    """Lazily construct the Voyage AI embeddings client used to embed syllabus_summary
+    for RAG retrieval. Defaults to voyage-3.5, which outputs 1024-dim vectors -
+    the Supabase pgvector column must match whatever dimension this model produces."""
+    from langchain_voyageai import VoyageAIEmbeddings
+
+    model_name = os.environ.get("VOYAGE_EMBEDDING_MODEL", "voyage-3.5")
+    return VoyageAIEmbeddings(
+        voyage_api_key=_require_env("VOYAGE_API_KEY"),
+        model=model_name,
     )
 
 
