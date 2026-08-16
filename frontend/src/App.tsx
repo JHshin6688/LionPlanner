@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
+import { AskLionPlanner } from './components/AskLionPlanner'
 import { CalendarGrid } from './components/CalendarGrid'
 import { CourseListPanel } from './components/CourseListPanel'
-import { WorkloadPanel } from './components/WorkloadPanel'
 import { useCourses } from './hooks/useCourses'
 import type { Course } from './types/course'
 import { DEFAULT_FILTERS, type Filters } from './types/filters'
@@ -65,7 +65,7 @@ function App() {
           onDropCourse={handleDropCourse}
           onRemoveCourse={handleRemoveCourse}
         />
-        <WorkloadPanel scheduledCourses={scheduledCourses} />
+        <AskLionPlanner scheduledCourses={scheduledCourses} />
       </div>
     </div>
   )

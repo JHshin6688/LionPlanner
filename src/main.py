@@ -3,6 +3,8 @@ import json
 from typing import List
 import csv
 
+from langchain_core.tracers.context import tracing_v2_enabled
+
 from src.web_functions.scrape import scrape_reviews, scrape_syllabus
 from src.web_functions.search import find_review_urls, find_syllabus_urls
 from src.db.supabase_client import get_course_hashes, upsert_course_analysis, upsert_degree_path
@@ -222,9 +224,12 @@ def main() -> None:
             course = Course2(**course_data)
             courses.append(course)
 
-    for course in courses:
-        # run_course(course, args.force_refresh)
-        run_course2(course, args.force_refresh)
+    # Course-DB build traces go to their own LangSmith project rather than
+    # whatever LANGCHAIN_PROJECT is set to (that's for Ask LionPlanner).
+    with tracing_v2_enabled(project_name="lionplanner_db"):
+        for course in courses:
+            # run_course(course, args.force_refresh)
+            run_course2(course, args.force_refresh)
 
 if __name__ == "__main__":
     main()

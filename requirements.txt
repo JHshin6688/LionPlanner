@@ -1,4 +1,6 @@
-langchain>=0.3.0
+# langchain>=1.0.0 for langchain.agents.create_agent (recommend_course.py) —
+# create_react_agent from langgraph.prebuilt is deprecated as of v1.
+langchain>=1.0.0
 langchain-core>=0.3.0
 langchain-anthropic>=0.3.0
 langchain-voyageai>=0.1.0
@@ -8,7 +10,8 @@ python-dotenv>=1.0.0
 requests>=2.31.0
 
 # Ask LionPlanner (multi-agent RAG) — src/agents/, src/api/
-langgraph>=0.2.0
+langgraph>=0.3.0
+langsmith>=0.1.0
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 firecrawl-py

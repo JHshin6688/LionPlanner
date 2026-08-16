@@ -79,3 +79,34 @@ BEGIN
       USING (true);
   END IF;
 END $$;
+
+-- Vector search backing recommend_course's search_courses tool
+-- (src/agents/recommend_course.py / src/db/supabase_client.py::search_courses_by_embedding).
+-- Exposed as an RPC because supabase-py's query builder can't express pgvector's
+-- <=> distance operator directly.
+create or replace function match_courses (
+  query_embedding vector(1024),
+  match_count int default 5
+)
+returns table (
+  course_id varchar,
+  course_title varchar,
+  department varchar,
+  course_level int,
+  syllabus_summary text,
+  similarity float
+)
+language sql stable
+as $$
+  select
+    course_id,
+    course_title,
+    department,
+    course_level,
+    syllabus_summary,
+    1 - (syllabus_summary_embedding <=> query_embedding) as similarity
+  from courses
+  where syllabus_summary_embedding is not null
+  order by syllabus_summary_embedding <=> query_embedding
+  limit match_count;
+$$;

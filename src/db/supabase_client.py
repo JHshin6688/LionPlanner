@@ -31,6 +31,18 @@ def upsert_course_analysis(course_id: str, data: dict) -> bool:
     return True
 
 
+def search_courses_by_embedding(embedding: list[float], match_count: int = 5) -> list[dict]:
+    """Vector-similarity search over courses.syllabus_summary_embedding via the
+    match_courses Postgres function (sql/schema2.sql) - supabase-py's query
+    builder can't express pgvector's <=> operator directly, hence the RPC."""
+    client = get_supabase_client()
+    response = client.rpc(
+        "match_courses",
+        {"query_embedding": embedding, "match_count": match_count},
+    ).execute()
+    return response.data or []
+
+
 def upsert_degree_path(degree_name: str, fundamental_courses: list, elective_courses: list) -> bool:
     """Insert or update the degree_path row identified by degree_name with the
     given fundamental and elective courses."""
