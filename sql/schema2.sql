@@ -33,6 +33,18 @@ CREATE TABLE IF NOT EXISTS degree_path (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Ask LionPlanner chat history. One row per frontend chat session (session_id
+-- is the same uuid the frontend already generates for each session in
+-- localStorage). `turns` accumulates as the conversation goes:
+-- [{"user": "...", "ai": "..."}, ...]
+CREATE TABLE IF NOT EXISTS chats (
+    session_id UUID PRIMARY KEY,
+    title VARCHAR(255) NOT NULL DEFAULT 'New Chat',
+    turns JSONB NOT NULL DEFAULT '[]'::jsonb,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 CREATE INDEX IF NOT EXISTS idx_courses_course_id ON courses(course_id);
 CREATE INDEX IF NOT EXISTS idx_courses_course_level ON courses(course_level);
 CREATE INDEX IF NOT EXISTS idx_degree_path_degree_name ON degree_path(degree_name);
@@ -45,6 +57,11 @@ alter table courses add column if not exists syllabus_summary_embedding vector(1
 -- which uses SUPABASE_SERVICE_ROLE_KEY and bypasses RLS entirely.
 ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE degree_path ENABLE ROW LEVEL SECURITY;
+
+-- chats has no read/write policy at all: only the backend (SUPABASE_SERVICE_ROLE_KEY,
+-- which bypasses RLS) ever touches it. The frontend never talks to Supabase directly
+-- for chat — it goes through /api/chat, same as it always has.
+ALTER TABLE chats ENABLE ROW LEVEL SECURITY;
 
 DO $$
 BEGIN

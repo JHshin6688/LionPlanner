@@ -1,18 +1,39 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AskLionPlanner } from './components/AskLionPlanner'
 import { CalendarGrid } from './components/CalendarGrid'
 import { CourseListPanel } from './components/CourseListPanel'
 import { useCourses } from './hooks/useCourses'
 import type { Course } from './types/course'
-import { DEFAULT_FILTERS, type Filters } from './types/filters'
+import type { Filters } from './types/filters'
+import { loadFilters, loadScheduledCourseIds, saveFilters, saveScheduledCourseIds } from './utils/appStorage'
 import { applyFilters } from './utils/filters'
 import { courseConflictsWithSchedule } from './utils/schedule'
 
 function App() {
   const { courses, isLoading, error } = useCourses()
-  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS)
+  const [filters, setFilters] = useState<Filters>(loadFilters)
   const [hoveredCourseId, setHoveredCourseId] = useState<string | null>(null)
   const [scheduledCourses, setScheduledCourses] = useState<Course[]>([])
+  const hasHydratedScheduleRef = useRef(false)
+
+  // Restore the previously-scheduled courses once `courses` has loaded, by id
+  // — always resolving against fresh data rather than caching stale copies.
+  useEffect(() => {
+    if (hasHydratedScheduleRef.current || isLoading) return
+    hasHydratedScheduleRef.current = true
+    const storedIds = loadScheduledCourseIds()
+    if (storedIds.length === 0) return
+    setScheduledCourses(courses.filter((c) => storedIds.includes(c.id)))
+  }, [isLoading, courses])
+
+  useEffect(() => saveFilters(filters), [filters])
+  useEffect(() => {
+    // Don't persist until hydration has run — otherwise the initial empty
+    // `scheduledCourses` state saves over (and destroys) the stored ids
+    // before they've had a chance to be restored.
+    if (!hasHydratedScheduleRef.current) return
+    saveScheduledCourseIds(scheduledCourses.map((c) => c.id))
+  }, [scheduledCourses])
 
   const scheduledCourseIds = useMemo(() => new Set(scheduledCourses.map((c) => c.id)), [scheduledCourses])
   const filteredCourses = useMemo(() => {

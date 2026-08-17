@@ -55,3 +55,29 @@ def upsert_degree_path(degree_name: str, fundamental_courses: list, elective_cou
     }
     client.table("degree_path").upsert(payload, on_conflict="degree_name").execute()
     return True
+
+
+def _derive_chat_title(query: str, max_length: int = 60) -> str:
+    title = " ".join(query.strip().split())
+    if len(title) <= max_length:
+        return title
+    return title[:max_length].rstrip() + "…"
+
+
+def save_chat_turn(session_id: str, query: str, answer: str) -> None:
+    """Append a {"user", "ai"} turn to the chats row for this session,
+    creating the row (with a title derived from the first question) on the
+    session's first turn."""
+    client = get_supabase_client()
+    turn = {"user": query, "ai": answer}
+    now = datetime.now(timezone.utc).isoformat()
+
+    existing = client.table("chats").select("turns").eq("session_id", session_id).maybe_single().execute()
+
+    if existing and existing.data:
+        turns = [*existing.data["turns"], turn]
+        client.table("chats").update({"turns": turns, "updated_at": now}).eq("session_id", session_id).execute()
+    else:
+        client.table("chats").insert(
+            {"session_id": session_id, "title": _derive_chat_title(query), "turns": [turn]}
+        ).execute()

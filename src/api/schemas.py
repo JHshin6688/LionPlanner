@@ -15,6 +15,7 @@ class ScheduledCourseIn(BaseModel):
 
 
 class ChatRequest(BaseModel):
+    session_id: str
     query: str
     chat_history: List[ChatMessageIn] = []
     scheduled_courses: List[ScheduledCourseIn] = []

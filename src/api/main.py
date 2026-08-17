@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.agents.graph import build_agent_graph
 from src.api.schemas import ChatRequest, ChatResponse
+from src.db.supabase_client import save_chat_turn
 
 app = FastAPI(title="LionPlanner Ask API")
 
@@ -43,4 +44,13 @@ def chat(request: ChatRequest) -> ChatResponse:
         # Purely for LangSmith trace readability — has no effect if tracing is off.
         config={"run_name": "ask_lionplanner_chat", "recursion_limit": 15},
     )
-    return ChatResponse(answer=result["answer"], route=result["route"])
+    answer = result["answer"]
+
+    try:
+        save_chat_turn(request.session_id, request.query, answer)
+    except Exception as exc:
+        # Chat history persistence is best-effort — a Supabase hiccup shouldn't
+        # break the user-facing response.
+        print(f"Warning: failed to save chat turn for session {request.session_id}: {exc}")
+
+    return ChatResponse(answer=answer, route=result["route"])

@@ -16,6 +16,7 @@ export interface ScheduledCoursePayload {
 }
 
 export interface ChatRequestBody {
+  session_id: string
   query: string
   chat_history: ChatMessage[]
   scheduled_courses: ScheduledCoursePayload[]
@@ -24,4 +25,12 @@ export interface ChatRequestBody {
 export interface ChatResponseBody {
   answer: string
   route: ChatRoute
+}
+
+export interface ChatSession {
+  id: string
+  title: string
+  messages: ChatMessage[]
+  createdAt: number
+  updatedAt: number
 }
