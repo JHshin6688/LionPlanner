@@ -1,4 +1,6 @@
-// Mirrors src/api/schemas.py (ChatRequest/ChatResponse) in the backend.
+// Request shape mirrors src/api/schemas.py::ChatRequest. The response is a
+// text/event-stream of ChatStreamEvent JSON lines, not a single JSON body —
+// see src/api/main.py.
 
 export type ChatRole = 'user' | 'assistant'
 
@@ -22,10 +24,13 @@ export interface ChatRequestBody {
   scheduled_courses: ScheduledCoursePayload[]
 }
 
-export interface ChatResponseBody {
-  answer: string
-  route: ChatRoute
-}
+// Server-Sent Events emitted by POST /api/chat (src/api/main.py), one JSON
+// object per `data: ` line.
+export type ChatStreamEvent =
+  | { type: 'token'; delta: string }
+  | { type: 'restart' }
+  | { type: 'done'; route: ChatRoute }
+  | { type: 'error'; message: string }
 
 export interface ChatSession {
   id: string

@@ -10,7 +10,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 
 from src.agents.state import AgentState
-from src.config import get_agent_llm
+from src.config import get_router_llm
 
 ROUTER_SYSTEM_PROMPT = """You are the routing agent for Ask LionPlanner, a Columbia University course \
 planning assistant. Read the student's question and decide which specialist should handle it. Do not \
@@ -33,7 +33,7 @@ class QueryRoute(BaseModel):
 
 
 def build_router_chain():
-    llm = get_agent_llm()
+    llm = get_router_llm()
     structured_llm = llm.with_structured_output(QueryRoute)
     prompt = ChatPromptTemplate.from_messages(
         [

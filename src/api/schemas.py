@@ -19,8 +19,3 @@ class ChatRequest(BaseModel):
     query: str
     chat_history: List[ChatMessageIn] = []
     scheduled_courses: List[ScheduledCourseIn] = []
-
-
-class ChatResponse(BaseModel):
-    answer: str
-    route: Literal["recommend_course", "analyze_workload", "general_question"]

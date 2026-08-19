@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Course } from '../types/course'
-import type { ChatMessage, ChatResponseBody, ChatSession } from '../types/chat'
+import type { ChatMessage, ChatSession, ChatStreamEvent } from '../types/chat'
 import {
   createSession,
   deriveTitle,
@@ -28,7 +28,17 @@ export function useChat(scheduledCourses: Course[]) {
   const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(new Set())
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => saveSessions(sessions), [sessions])
+  // Streaming updates setSessions once per token, which can be dozens of
+  // times a second for a long answer — debounce the sessionStorage write
+  // rather than doing it on every single one.
+  const saveTimeoutRef = useRef<number | undefined>(undefined)
+  useEffect(() => {
+    if (saveTimeoutRef.current) window.clearTimeout(saveTimeoutRef.current)
+    saveTimeoutRef.current = window.setTimeout(() => saveSessions(sessions), 300)
+    return () => {
+      if (saveTimeoutRef.current) window.clearTimeout(saveTimeoutRef.current)
+    }
+  }, [sessions])
   useEffect(() => saveActiveSessionId(activeSessionId), [activeSessionId])
 
   const activeSession = sessions.find((s) => s.id === activeSessionId) ?? sessions[0]
@@ -73,6 +83,28 @@ export function useChat(scheduledCourses: Course[]) {
     setLoadingSessionIds((prev) => new Set(prev).add(sessionId))
     setError(null)
 
+    // Applies `updater` to the trailing assistant message's content for this
+    // session, creating that message on its first call (right after the user
+    // message we just pushed, so the trailing message is always 'user' then).
+    function updateAssistantMessage(updater: (prev: string) => string) {
+      setSessions((prev) =>
+        prev.map((s) => {
+          if (s.id !== sessionId) return s
+          const last = s.messages[s.messages.length - 1]
+          if (last?.role === 'assistant') {
+            const updated = [...s.messages]
+            updated[updated.length - 1] = { ...last, content: updater(last.content) }
+            return { ...s, messages: updated, updatedAt: Date.now() }
+          }
+          return {
+            ...s,
+            messages: [...s.messages, { role: 'assistant', content: updater('') }],
+            updatedAt: Date.now(),
+          }
+        })
+      )
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
@@ -88,15 +120,39 @@ export function useChat(scheduledCourses: Course[]) {
           })),
         }),
       })
-      if (!response.ok) throw new Error(`Ask LionPlanner request failed (${response.status})`)
-      const data = (await response.json()) as ChatResponseBody
-      setSessions((prev) =>
-        prev.map((s) =>
-          s.id === sessionId
-            ? { ...s, messages: [...s.messages, { role: 'assistant', content: data.answer }], updatedAt: Date.now() }
-            : s
-        )
-      )
+      if (!response.ok || !response.body) {
+        throw new Error(`Ask LionPlanner request failed (${response.status})`)
+      }
+
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+
+        let boundary: number
+        while ((boundary = buffer.indexOf('\n\n')) !== -1) {
+          const rawEvent = buffer.slice(0, boundary)
+          buffer = buffer.slice(boundary + 2)
+          const dataLine = rawEvent.split('\n').find((line) => line.startsWith('data: '))
+          if (!dataLine) continue
+
+          const streamEvent = JSON.parse(dataLine.slice('data: '.length)) as ChatStreamEvent
+          if (streamEvent.type === 'token') {
+            updateAssistantMessage((prev) => prev + streamEvent.delta)
+          } else if (streamEvent.type === 'restart') {
+            // verify_grounding rejected what we've shown so far and either
+            // retried or replaced it with a fallback — clear and start over.
+            updateAssistantMessage(() => '')
+          } else if (streamEvent.type === 'error') {
+            setError(streamEvent.message)
+          }
+          // 'done' needs no handling — the loop just exits naturally after.
+        }
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to reach Ask LionPlanner.')
     } finally {

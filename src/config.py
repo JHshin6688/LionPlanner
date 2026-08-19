@@ -61,6 +61,20 @@ def get_agent_llm():
     )
 
 
+def get_router_llm():
+    """Lazily construct the cheap/fast Claude model used by analyze_query
+    (src/agents/router.py) - it's a single classification call with a short
+    prompt, so it doesn't need the same model as the answer-generating nodes."""
+    from langchain_anthropic import ChatAnthropic
+
+    model_name = os.environ.get("ANTHROPIC_ROUTER_MODEL", "claude-haiku-4-5-20251001")
+    return ChatAnthropic(
+        model=model_name,
+        api_key=_require_env("ANTHROPIC_API_KEY"),
+        temperature=0,
+    )
+
+
 def get_embedding_model():
     """Lazily construct the Voyage AI embeddings client used to embed syllabus_summary
     for RAG retrieval. Defaults to voyage-3.5, which outputs 1024-dim vectors -
