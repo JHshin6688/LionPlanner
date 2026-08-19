@@ -3,9 +3,11 @@
 Run locally with:
     uvicorn src.api.main:app --reload
 
-Deploys straightforwardly onto AWS (e.g. Lambda via Mangum behind API
-Gateway, or ECS/Fargate) once the agent graph is wired to a real retriever.
+Deployed via Docker (see /Dockerfile) to Fly.io by
+.github/workflows/backend-deploy.yml.
 """
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,9 +17,17 @@ from src.db.supabase_client import save_chat_turn
 
 app = FastAPI(title="LionPlanner Ask API")
 
+# Comma-separated list of allowed frontend origins, e.g.
+# "https://lionplanner.vercel.app,http://localhost:5173"
+_frontend_origins = [
+    origin.strip()
+    for origin in os.environ.get("FRONTEND_ORIGINS", "http://localhost:5173").split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # TODO: restrict to the deployed frontend origin before shipping
+    allow_origins=_frontend_origins,
     allow_methods=["POST"],
     allow_headers=["*"],
 )

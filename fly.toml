@@ -1,0 +1,23 @@
+# One-time setup required before the GitHub Actions workflow can deploy:
+#   1. flyctl auth login
+#   2. flyctl apps create lionplanner-api   (rename below if the name is taken)
+#   3. flyctl secrets set SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... \
+#        ANTHROPIC_API_KEY=... ANTHROPIC_AGENT_MODEL=... FRONTEND_ORIGINS=...
+#      (add any other vars from .env.example that src/api actually needs)
+#   4. Add FLY_API_TOKEN (from `flyctl tokens create deploy`) as a GitHub Actions secret
+
+app = "lionplanner-api"
+primary_region = "iad"
+
+[build]
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

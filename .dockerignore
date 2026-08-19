@@ -1,0 +1,11 @@
+.venv
+venv
+__pycache__
+*.pyc
+frontend
+data
+*.jsonl
+*.md
+.env
+.git
+.github
