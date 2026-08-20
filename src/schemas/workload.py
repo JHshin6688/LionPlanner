@@ -24,14 +24,6 @@ class WorkloadSummary(BaseModel):
 
 class WorkloadAnalysis(BaseModel):
     workload_scores: WorkloadScores
-    # archetype: WorkloadArchetype
-    burnout_risk_tags: List[str] = Field(default_factory=list, description="Top 2-3 stress factors, e.g., 'Weekly C++ P-sets'")
-    weekly_hours_estimated: float = Field(..., description="Estimated out-of-class hours per week")
-    # summary_reasoning: str = Field(..., description="Explainable summary of why these scores were assigned")
-    review_summary_3lines: str = Field(..., description="3-line summary of student reviews (difficulty, grading, pros/cons)")
-
-class WorkloadAnalysis2(BaseModel):
-    workload_scores: WorkloadScores
     burnout_risk_tags: List[str] = Field(default_factory=list, description="Top 2-3 stress factors, e.g., 'Weekly C++ P-sets'")
     weekly_hours_estimated: float = Field(..., description="Estimated out-of-class hours per week")
     overall_summary: str = Field(..., description="3-line summary of the course workload, including difficulty, grading, and pros/cons")

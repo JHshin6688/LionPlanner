@@ -4,7 +4,10 @@ on:
   push:
     branches: [main]
     paths:
-      - "src/**"
+      - "src/api/**"
+      - "src/agents/**"
+      - "src/db/**"
+      - "src/config.py"
       - "requirements.txt"
       - "Dockerfile"
       - "fly.toml"
