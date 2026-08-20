@@ -31,6 +31,22 @@ def upsert_course_analysis(course_id: str, data: dict) -> bool:
     return True
 
 
+def update_course_fields(course_id: str, data: dict) -> bool:
+    """Patch only the given columns on an existing course row. Unlike
+    upsert_course_analysis, this is a plain UPDATE (not INSERT ... ON CONFLICT
+    DO UPDATE) - required for partial-column edits, since course_title/
+    instructor_name/department are NOT NULL with no default, so upsert's
+    speculative INSERT branch fails on them even when the row already exists
+    and would ultimately just be updated."""
+    client = get_supabase_client()
+    payload = {
+        **data,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+    client.table("courses").update(payload).eq("course_id", course_id).execute()
+    return True
+
+
 def search_courses_by_embedding(embedding: list[float], match_count: int = 5) -> list[dict]:
     """Vector-similarity search over courses.syllabus_summary_embedding via the
     match_courses Postgres function (sql/schema2.sql) - supabase-py's query
