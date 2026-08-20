@@ -6,7 +6,13 @@ here — no retrieval, no answering.
 
 Uses the full chat_history, not just the latest message: a bare follow-up
 like "can you recommend one?" is only classifiable as recommend_course in
-light of what was asked before it.
+light of what was asked before it. Also told whether the student has any
+scheduled_courses (just a count + course_id/title list, not the full
+workload_analysis - this is a cheap classification call, not a place to burn
+tokens on data it won't reason over) - without this, a question like
+"recommend one from this schedule" reads as if no schedule was ever provided,
+and the router sends it to general_question to ask for one that already
+exists (observed - see the LangSmith trace this was diagnosed from).
 """
 from typing import Literal
 
@@ -43,9 +49,20 @@ class QueryRoute(BaseModel):
     reasoning: str = Field(..., description="One sentence on why this route was chosen.")
 
 
+def _schedule_note(scheduled_courses: list) -> str:
+    if not scheduled_courses:
+        return "The student currently has no courses on their schedule."
+    listing = ", ".join(f"{c['course_id']} ({c['course_title']})" for c in scheduled_courses)
+    return f"The student currently has {len(scheduled_courses)} course(s) on their schedule: {listing}."
+
+
 def analyze_query(state: AgentState) -> dict:
     llm = get_router_llm().with_structured_output(QueryRoute)
     history = to_langchain_messages(state.get("chat_history") or [])
-    messages = [SystemMessage(ROUTER_SYSTEM_PROMPT), *(history or [HumanMessage(state["query"])])]
+    messages = [
+        SystemMessage(ROUTER_SYSTEM_PROMPT),
+        SystemMessage(_schedule_note(state.get("scheduled_courses") or [])),
+        *(history or [HumanMessage(state["query"])]),
+    ]
     result: QueryRoute = llm.invoke(messages)
     return {"route": result.route}

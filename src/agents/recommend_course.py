@@ -177,6 +177,23 @@ def _build_conflict_tool(seen_course_ids: set[str], scheduled_courses: List[Sche
     return check_schedule_conflict
 
 
+def _schedule_note(scheduled_courses: list) -> str:
+    # check_schedule_conflict knowing the schedule isn't enough - the model
+    # needs to be told the schedule *exists* before it'll think to call the
+    # tool at all. Without this, a request like "recommend one that fits my
+    # schedule" (no candidate course_id named) reads as if there's nothing to
+    # check against, and the model asks the student for their schedule
+    # instead of using data it already has (observed via LangSmith).
+    if not scheduled_courses:
+        return "The student currently has no courses on their schedule."
+    listing = ", ".join(f"{c['course_id']} ({c['course_title']})" for c in scheduled_courses)
+    return (
+        f"The student currently has {len(scheduled_courses)} course(s) already on their schedule: {listing}. "
+        "You already have this - never ask the student for their schedule. Use check_schedule_conflict with "
+        "a candidate course_id to see whether it fits."
+    )
+
+
 def recommend_course(state: AgentState) -> dict:
     scheduled_courses = state.get("scheduled_courses") or []
     # check_schedule_conflict means the answer can now legitimately name a
@@ -192,7 +209,7 @@ def recommend_course(state: AgentState) -> dict:
             _build_degree_path_tool(seen_course_ids),
             _build_conflict_tool(seen_course_ids, scheduled_courses),
         ],
-        system_prompt=SYSTEM_PROMPT,
+        system_prompt=f"{SYSTEM_PROMPT}\n\n{_schedule_note(scheduled_courses)}",
     )
 
     # chat_history always ends with the current turn's question (see
