@@ -6,7 +6,7 @@ from src.config import get_serper_api_key
 
 SERPER_SEARCH_URL = "https://google.serper.dev/search"
 
-
+# Not used in the current implementation, but could be useful for future enhancements
 def _search(query: str, num_results: int = 5) -> List[dict]:
     response = requests.post(
         SERPER_SEARCH_URL,
