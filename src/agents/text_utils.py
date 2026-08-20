@@ -20,7 +20,12 @@ report.
 import re
 
 # Loosely matches Columbia course-id-shaped tokens across the formats seen in
-# scraped data: "COMS-W4118", "COMS W4118", "COMS4118".
+# scraped data: "COMS-W4118", "COMS W4118", "COMS4118", "COMS E6184" (E is
+# Columbia's grad-level infix, W the undergrad/professional one - not just W,
+# or every E-prefixed course silently fails to be recognized as cited at
+# all, which doesn't just miss it - it makes grounding blind to it either
+# way, since a hallucinated E-course would go undetected the same way a real
+# one goes unrecognized).
 #
 # Deliberately NOT \b at the edges: Python's re treats Hangul as a "word"
 # character, so \b silently fails to match right where a Korean particle is
@@ -31,7 +36,7 @@ import re
 # lookarounds keeps the same intent (don't match "4118" out of "44118" or
 # "COMS" out of "XCOMS") without assuming word boundaries exist in every
 # language surrounding the match.
-_COURSE_ID_PATTERN = re.compile(r"(?<![A-Za-z0-9])[A-Z]{2,6}[\s-]?W?\d{3,4}(?![0-9])")
+_COURSE_ID_PATTERN = re.compile(r"(?<![A-Za-z0-9])[A-Z]{2,6}[\s-]?[A-Z]?\d{3,4}(?![0-9])")
 
 
 def normalize_course_id(course_id: str) -> str:

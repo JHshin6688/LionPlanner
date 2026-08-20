@@ -38,6 +38,7 @@ from langchain.agents import create_agent
 from langchain_core.messages import HumanMessage
 from langchain_core.tools import tool
 
+from src.agents.message_utils import to_langchain_messages
 from src.agents.state import AgentState, ScheduledCourseContext
 from src.agents.text_utils import find_course_id_mentions, normalize_course_id
 from src.config import get_agent_llm, get_embedding_model
@@ -194,7 +195,11 @@ def recommend_course(state: AgentState) -> dict:
         system_prompt=SYSTEM_PROMPT,
     )
 
-    messages = [HumanMessage(state["query"])]
+    # chat_history always ends with the current turn's question (see
+    # message_utils.py), so this alone carries the full conversation - a bare
+    # follow-up like "recommend one" only makes sense with the prior turns.
+    history = state.get("chat_history") or []
+    messages = to_langchain_messages(history) if history else [HumanMessage(state["query"])]
     feedback = state.get("verification_feedback")
     if feedback:
         messages.append(HumanMessage(f"Correction needed on your previous attempt: {feedback}"))

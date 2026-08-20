@@ -3,18 +3,24 @@
 Classifies the student's question into exactly one of three routes so the
 graph can dispatch to the matching specialist node. Nothing else happens
 here — no retrieval, no answering.
+
+Uses the full chat_history, not just the latest message: a bare follow-up
+like "can you recommend one?" is only classifiable as recommend_course in
+light of what was asked before it.
 """
 from typing import Literal
 
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import BaseModel, Field
 
+from src.agents.message_utils import to_langchain_messages
 from src.agents.state import AgentState
 from src.config import get_router_llm
 
 ROUTER_SYSTEM_PROMPT = """You are the routing agent for Ask LionPlanner, a Columbia University course \
-planning assistant. Read the student's question and decide which specialist should handle it. Do not \
-answer the question yourself."""
+planning assistant. Read the conversation so far and decide which specialist should handle the student's \
+latest message — including when it's a follow-up that only makes sense in light of earlier turns (e.g. \
+"can you recommend one?" after discussing a topic). Do not answer the question yourself."""
 
 
 class QueryRoute(BaseModel):
@@ -37,19 +43,9 @@ class QueryRoute(BaseModel):
     reasoning: str = Field(..., description="One sentence on why this route was chosen.")
 
 
-def build_router_chain():
-    llm = get_router_llm()
-    structured_llm = llm.with_structured_output(QueryRoute)
-    prompt = ChatPromptTemplate.from_messages(
-        [
-            ("system", ROUTER_SYSTEM_PROMPT),
-            ("human", "{query}"),
-        ]
-    )
-    return prompt | structured_llm
-
-
 def analyze_query(state: AgentState) -> dict:
-    chain = build_router_chain()
-    result: QueryRoute = chain.invoke({"query": state["query"]})
+    llm = get_router_llm().with_structured_output(QueryRoute)
+    history = to_langchain_messages(state.get("chat_history") or [])
+    messages = [SystemMessage(ROUTER_SYSTEM_PROMPT), *(history or [HumanMessage(state["query"])])]
+    result: QueryRoute = llm.invoke(messages)
     return {"route": result.route}

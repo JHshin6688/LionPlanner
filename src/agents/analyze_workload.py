@@ -12,8 +12,9 @@ token-by-token; `cited_course_ids` is recovered from the text afterward via
 src/agents/text_utils.py rather than self-reported by the model. See that
 module's docstring for the tradeoff.
 """
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import HumanMessage, SystemMessage
 
+from src.agents.message_utils import to_langchain_messages
 from src.agents.state import AgentState
 from src.agents.text_utils import find_course_id_mentions, normalize_course_id
 from src.config import get_agent_llm
@@ -38,21 +39,23 @@ def analyze_workload(state: AgentState) -> dict:
     feedback = state.get("verification_feedback")
     feedback_block = f"\n\nCorrection needed on your previous attempt: {feedback}" if feedback else ""
 
+    # chat_history always ends with the current turn's question (see
+    # message_utils.py) - everything before that is prior conversation, which
+    # goes in as plain history; the schedule data is attached only to the
+    # final (current) question, not repeated on every historical turn.
+    history = state.get("chat_history") or []
+    prior_turns = to_langchain_messages(history[:-1]) if history else []
+    latest_query = history[-1]["content"] if history else state["query"]
+
+    human_content = HUMAN_PROMPT.format(
+        schedule=scheduled or "(the student has not added any courses to their schedule yet)",
+        query=latest_query,
+        feedback_block=feedback_block,
+    )
+
     llm = get_agent_llm()
-    prompt = ChatPromptTemplate.from_messages(
-        [
-            ("system", SYSTEM_PROMPT),
-            ("human", HUMAN_PROMPT),
-        ]
-    )
-    chain = prompt | llm
-    response = chain.invoke(
-        {
-            "schedule": scheduled or "(the student has not added any courses to their schedule yet)",
-            "query": state["query"],
-            "feedback_block": feedback_block,
-        }
-    )
+    messages = [SystemMessage(SYSTEM_PROMPT), *prior_turns, HumanMessage(human_content)]
+    response = llm.invoke(messages)
     answer = response.content if isinstance(response.content, str) else str(response.content)
 
     return {
