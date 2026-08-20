@@ -12,9 +12,9 @@ A course-planning app that helps Columbia students build a schedule around actua
 
 ## Overview & Motivation
 
-Most course-registration tools focus on the basics — filtering by department, showing meeting times, listing prerequisites. But when students actually plan a semester, what they need is more layered: how demanding is this course in terms of workload, what does the whole schedule add up to once every course is stacked together, and does a course that fits time-wise also fit the degree path they're following.
+Most course-registration tools focus on the basics — filtering by department, showing meeting times, listing prerequisites. But when students actually plan a semester, what they need is more layered: how demanding is this course in terms of workload, what does the whole schedule add up to once every course is stacked together, and does a course that fits time-wise also fit the degree path they're following. Mostly, answering "how much work is this course" meant leaving the registration site entirely — reading the syllabus, digging through review sites, and cross-checking degree requirements by hand.
 
-At Columbia, answering "how much work is this course" meant leaving the registration site entirely — reading the syllabus, digging through review sites, and cross-checking degree requirements by hand. **LionPlanner exists to pull all of that into one place: a scheduling tool where syllabus content, instructor reviews, workload analysis, schedule conflicts, and degree-path fit are all a click (or a chat message) away — powered by an agentic RAG system underneath.**
+**LionPlanner pulls all of that into one place: a scheduling tool where syllabus content, instructor reviews, workload analysis, schedule conflicts, and degree-path fit are all one chat message away**
 
 ## Key Features
 
