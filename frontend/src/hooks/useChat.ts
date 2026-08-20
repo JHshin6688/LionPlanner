@@ -117,6 +117,7 @@ export function useChat(scheduledCourses: Course[]) {
             course_id: c.course_id,
             course_title: c.course_title,
             workload_analysis: c.workload_analysis,
+            schedule_time: c.schedule_time,
           })),
         }),
       })

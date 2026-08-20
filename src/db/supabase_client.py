@@ -43,6 +43,66 @@ def search_courses_by_embedding(embedding: list[float], match_count: int = 5) ->
     return response.data or []
 
 
+def get_course_schedule(course_id: str) -> Optional[list]:
+    """schedule_time for a single course by exact course_id, or None if the
+    course doesn't exist. Used by recommend_course's check_schedule_conflict
+    tool - a direct lookup rather than relying on the course having already
+    turned up in a search_courses result this turn."""
+    client = get_supabase_client()
+    response = (
+        client.table("courses")
+        .select("schedule_time")
+        .eq("course_id", course_id)
+        .maybe_single()
+        .execute()
+    )
+    if not response or not response.data:
+        return None
+    return response.data.get("schedule_time")
+
+
+def get_courses_by_ids(course_ids: list[str]) -> list[dict]:
+    """course_id/course_title/department/course_level for a set of course_ids.
+    Used to enrich check_degree_path's results with real titles instead of
+    letting the model guess them from a bare course_id list - exact match
+    only, so a track's course_id list may not 100% match rows here if the
+    scraped course_id formatting differs (see text_utils.py's docstring)."""
+    if not course_ids:
+        return []
+    client = get_supabase_client()
+    response = (
+        client.table("courses")
+        .select("course_id, course_title, department, course_level")
+        .in_("course_id", course_ids)
+        .execute()
+    )
+    return response.data or []
+
+
+def get_degree_path(degree_name: str) -> Optional[dict]:
+    """Case-insensitive partial match on degree_name (e.g. "ml" matches
+    "Machine Learning"), since a student's phrasing rarely matches the exact
+    track name stored in the table. Returns the first match, or None."""
+    client = get_supabase_client()
+    response = (
+        client.table("degree_path")
+        .select("degree_name, required_courses, elective_courses")
+        .ilike("degree_name", f"%{degree_name}%")
+        .limit(1)
+        .execute()
+    )
+    rows = response.data or []
+    return rows[0] if rows else None
+
+
+def list_degree_paths() -> list[str]:
+    """All available degree_path track names - e.g. so a tool can suggest
+    valid options when a student's phrasing doesn't match any of them."""
+    client = get_supabase_client()
+    response = client.table("degree_path").select("degree_name").execute()
+    return [row["degree_name"] for row in (response.data or [])]
+
+
 def upsert_degree_path(degree_name: str, fundamental_courses: list, elective_courses: list) -> bool:
     """Insert or update the degree_path row identified by degree_name with the
     given fundamental and elective courses."""

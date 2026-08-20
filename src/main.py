@@ -116,21 +116,15 @@ def main() -> None:
         upsert_degree_path(name, paths["fundamental"], paths["electives"])
         print(f"[{name}] Stored degree path in Supabase.")
 
-    # with open("src/courses_test.jsonl", "r", encoding="utf-8") as f:
-    #     for line in f:
-    #         course = json.loads(line)
-    #         courses.append(Course(**course))
-
-
     review_data = {}
     with open("src/data/professors.csv", "r", encoding="utf-8") as f:
         reviews = csv.reader(f)
-        next(reviews)  # Skip the header row
+        next(reviews)
         for row in reviews:
             instructor, review_url = row
             review_data[instructor] = review_url
             
-    with open("src/data/courses_mini.csv", "r", encoding="utf-8") as f:
+    with open("src/data/courses.csv", "r", encoding="utf-8") as f:
         total_reader = csv.reader(f)
         next(total_reader)
         for row in total_reader:

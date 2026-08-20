@@ -111,6 +111,7 @@ returns table (
   department varchar,
   course_level int,
   syllabus_summary text,
+  schedule_time jsonb,
   similarity float
 )
 language sql stable
@@ -121,6 +122,7 @@ as $$
     department,
     course_level,
     syllabus_summary,
+    schedule_time,
     1 - (syllabus_summary_embedding <=> query_embedding) as similarity
   from courses
   where syllabus_summary_embedding is not null

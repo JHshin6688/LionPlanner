@@ -2,6 +2,8 @@
 // text/event-stream of ChatStreamEvent JSON lines, not a single JSON body —
 // see src/api/main.py.
 
+import type { ScheduleSession } from './course'
+
 export type ChatRole = 'user' | 'assistant'
 
 export interface ChatMessage {
@@ -15,6 +17,7 @@ export interface ScheduledCoursePayload {
   course_id: string
   course_title: string
   workload_analysis: unknown
+  schedule_time: ScheduleSession[]
 }
 
 export interface ChatRequestBody {

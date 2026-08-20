@@ -1,0 +1,20 @@
+{"Machine Learning" : {
+    "fundamental": ["COMS W4771", "COMS W4772", "COMS W4776", "COMS W4773", "COMS W4775", "COMS W4705"],
+    "electives": ["COMS W4111", "COMS E6706", "COMS E6717","STAT W4240","STAT W4249","STAT W5242","STAT G6104"]
+    },
+
+"Natural Language Processing": {
+    "fundamental": ["COMS W4705", "COMS W4706"],
+    "electives": ["COMS W4170","COMS W4771","COMS W4772","ELEN E4810","ELEN E6829","PSYC G4232","PSYC G4236","PSYC G4470","PSYC G6006"]
+    },
+
+"Software Systems" : {
+    "fundamental": ["COMS W4115"],
+    "electives": ["COMS W4111","COMS W4130","COMS W4153","COMS W4170","CSEE W4840","COMS E6118","COMS E6121","COMS E6184","CSEE E6863"]
+    },
+
+"Computer Security" : {
+    "fundamental": ["COMS W4261"],
+    "electives": ["COMS W4115","COMS E6118","COMS E6183","COMS E6184","COMS E6185","COMS E6261","CSEE E6863"]
+    }
+}

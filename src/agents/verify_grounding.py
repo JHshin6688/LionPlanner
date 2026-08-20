@@ -33,7 +33,7 @@ def verify_grounding(state: AgentState) -> dict:
         return {
             "grounded": True,  # stop retrying — "done", not "correct"
             "answer": (
-                "I'm sorry, I can't provide a grounded answer based on the courses I retrieved or were given."
+                "I'm sorry, I can't provide a grounded answer based on the courses I retrieved or were given. "
                 "Could you please ask a more specific question or provide more context?"
             ),
         }

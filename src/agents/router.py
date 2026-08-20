@@ -21,10 +21,15 @@ class QueryRoute(BaseModel):
     route: Literal["recommend_course", "analyze_workload", "general_question"] = Field(
         ...,
         description=(
-            "recommend_course: the student wants a course that teaches/covers some topic, or asks for a "
-            "course recommendation matching an interest or goal.\n"
-            "analyze_workload: the student asks about the workload, difficulty, or how demanding their "
-            "*current schedule* (the courses already on their calendar) is or would be.\n"
+            "recommend_course: the student wants a course that teaches/covers some topic, asks for a course "
+            "recommendation matching an interest or goal, asks about degree/track/major requirements, or "
+            "asks about a *specific course they name* that isn't already on their schedule — including "
+            "whether it's worth taking or whether it would fit/conflict with their schedule. Anything "
+            "involving a course not already on their calendar goes here, even if the question also "
+            "mentions their current schedule.\n"
+            "analyze_workload: the student asks about the workload, difficulty, or how demanding the "
+            "courses *already on their schedule* are — no course outside their current calendar is "
+            "involved.\n"
             "general_question: anything else — a question the model can answer directly without looking "
             "up specific courses or the student's schedule."
         ),

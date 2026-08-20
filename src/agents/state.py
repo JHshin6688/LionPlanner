@@ -6,13 +6,21 @@ class ChatMessage(TypedDict):
     content: str
 
 
+class ScheduleSession(TypedDict):
+    day: str  # "Mon", "Tue", ...
+    start: str  # "HH:MM", 24h
+    end: str  # "HH:MM", 24h
+
+
 class ScheduledCourseContext(TypedDict):
-    """Minimal course info the frontend sends for whatever is currently on the
-    student's calendar. Used by analyze_workload; available to every node."""
+    """Course info the frontend sends for whatever is currently on the
+    student's calendar. Used by analyze_workload, and by recommend_course's
+    check_schedule_conflict tool; available to every node."""
 
     course_id: str
     course_title: str
     workload_analysis: dict
+    schedule_time: List[ScheduleSession]
 
 
 class AgentState(TypedDict, total=False):

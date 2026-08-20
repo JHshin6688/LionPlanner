@@ -8,10 +8,17 @@ class ChatMessageIn(BaseModel):
     content: str
 
 
+class ScheduleSessionIn(BaseModel):
+    day: str
+    start: str
+    end: str
+
+
 class ScheduledCourseIn(BaseModel):
     course_id: str
     course_title: str
     workload_analysis: dict
+    schedule_time: List[ScheduleSessionIn] = []
 
 
 class ChatRequest(BaseModel):
