@@ -10,11 +10,11 @@
 
 "Software Systems" : {
     "fundamental": ["COMS W4115"],
-    "electives": ["COMS W4111","COMS W4130","COMS W4153","COMS W4170","CSEE W4840","COMS E6118","COMS E6121","COMS E6184","CSEE E6863"]
+    "electives": ["COMS W4111","COMS W4130","COMS W4153","COMS W4170","CSEE W4840","COMS E6118","COMS E6121","COMS E6184"]
     },
 
 "Computer Security" : {
     "fundamental": ["COMS W4261"],
-    "electives": ["COMS W4115","COMS E6118","COMS E6183","COMS E6184","COMS E6185","COMS E6261","CSEE E6863"]
+    "electives": ["COMS W4115","COMS E6118","COMS E6183","COMS E6184","COMS E6185","COMS E6261"]
     }
 }

@@ -18,6 +18,15 @@ def get_course_hashes(course_id: str) -> Optional[dict]:
     return response.data if response else None
 
 
+def get_all_workload_analyses() -> list[dict]:
+    """course_id/course_title/workload_analysis for every course - used to
+    audit workload_analysis contents across the whole table (e.g. finding
+    courses whose scores all came back 0)."""
+    client = get_supabase_client()
+    response = client.table("courses").select("course_id, course_title, workload_analysis").execute()
+    return response.data or []
+
+
 def upsert_course_analysis(course_id: str, data: dict) -> bool:
     """Insert or update the course row identified by course_id with the
     given column values (raw text, hashes, workload_analysis, etc.)."""
