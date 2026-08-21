@@ -150,7 +150,10 @@ flowchart TD
   - `check_degree_path` — looks up required/elective courses for a track from the curated `degree_path` table, more authoritative than a topic guess when a student names a concentration.
   - `check_schedule_conflict` — deterministic day/time overlap check in code, since LLMs are unreliable at interval arithmetic.
 - **`verify_grounding`**: not another LLM call — a plain set-membership check that every course the answer cites was actually retrieved or provided this turn. On a failure it routes back to the originating node once with corrective feedback; if it fails again, it gives up with a fixed fallback message instead of looping.
-- Answers stream token-by-token over Server-Sent Events (`src/api/main.py`) directly to the frontend chat panel.
+- Answers stream token-by-token over Server-Sent Events (`src/api/main.py`) directly to the frontend chat panel.  
+
+![Ask LionPlanner LangSmith trace](docs/langsmith-trace.png)
+*A real `recommend_course` run: the router picks `recommend_course`, the agent calls `check_degree_path` → `search_courses` → `check_schedule_conflict` in sequence, and `verify_grounding` passes it through with no retry needed. [View the full interactive trace on LangSmith →](https://smith.langchain.com/public/776094f5-44b4-4cab-a239-3b157c2a89f1/r/01a02263-5b00-7243-ac30-b8f7f28a3fe6?start_time=2026-08-21T03%3A35%3A31.840646Z)*
 
 ### Frontend
 
