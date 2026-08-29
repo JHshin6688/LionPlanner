@@ -12,7 +12,7 @@ export function useCourses() {
 
     async function load() {
       setIsLoading(true)
-      const { data, error } = await supabase.from('courses').select('*').order('course_id')
+      const { data, error } = await supabase.from('courses_old').select('*').order('course_id')
       if (cancelled) return
       if (error) {
         setError(error.message)
