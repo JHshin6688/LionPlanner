@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS courses_old (
+CREATE TABLE IF NOT EXISTS courses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     course_id VARCHAR(50) UNIQUE NOT NULL,      -- e.g., 'COMS-W3157'
     course_title VARCHAR(255) NOT NULL,         -- e.g., 'Advanced Programming'
@@ -45,17 +45,17 @@ CREATE TABLE IF NOT EXISTS chats (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_courses_course_id ON courses_old(course_id);
-CREATE INDEX IF NOT EXISTS idx_courses_course_level ON courses_old(course_level);
+CREATE INDEX IF NOT EXISTS idx_courses_course_id ON courses(course_id);
+CREATE INDEX IF NOT EXISTS idx_courses_course_level ON courses(course_level);
 CREATE INDEX IF NOT EXISTS idx_degree_path_degree_name ON degree_path(degree_name);
 
 create extension if not exists vector;
-alter table courses_old add column if not exists syllabus_summary_embedding vector(1024);
+alter table courses add column if not exists syllabus_summary_embedding vector(1024);
 
 -- Row Level Security: the frontend uses the public anon key, so it must be
 -- read-only. Writes (insert/update/delete) go through the data pipeline,
 -- which uses SUPABASE_SERVICE_ROLE_KEY and bypasses RLS entirely.
-ALTER TABLE courses_old ENABLE ROW LEVEL SECURITY;
+ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE degree_path ENABLE ROW LEVEL SECURITY;
 
 -- chats has no read/write policy at all: only the backend (SUPABASE_SERVICE_ROLE_KEY,
@@ -69,11 +69,11 @@ BEGIN
     SELECT 1
     FROM pg_policies
     WHERE schemaname = 'public'
-      AND tablename = 'courses_old'
+      AND tablename = 'courses'
       AND policyname = 'Allow public read'
   ) THEN
     CREATE POLICY "Allow public read"
-      ON public.courses_old
+      ON public.courses
       FOR SELECT
       TO PUBLIC
       USING (true);
@@ -124,7 +124,7 @@ as $$
     syllabus_summary,
     schedule_time,
     1 - (syllabus_summary_embedding <=> query_embedding) as similarity
-  from courses_old
+  from courses
   where syllabus_summary_embedding is not null
   order by syllabus_summary_embedding <=> query_embedding
   limit match_count;
