@@ -57,7 +57,12 @@ git clone https://github.com/<your-org>/lionplanner.git
 cd lionplanner
 ```
 
-Run [`sql/schema.sql`](sql/schema.sql) in your Supabase project's SQL editor. This creates the `courses`, `degree_path`, and `chats` tables, enables `pgvector`, sets up row-level security (read-only for the anon key), and defines the `match_courses` RPC used for semantic search.
+Run the SQL migrations in your Supabase project's SQL editor, in order:
+
+- [`sql/schema.sql`](sql/schema.sql) — creates `degree_path` and `chats` (plus a legacy monolithic `courses` table, unused from here on).
+- [`sql/schema_v2.sql`](sql/schema_v2.sql) — creates the current course schema: `review` (one row per instructor), `courses_total` (a durable, semester-independent cache of every course/instructor pairing ever analyzed), `courses_semester` (just this semester's offerings + `schedule_time`), the `courses_semester_view` the frontend and Ask LionPlanner actually read from, and the `match_courses` RPC for semantic search.
+
+Migrating an existing deployment that still has data in the old `courses` table? Run [`sql/migrate_to_v2.sql`](sql/migrate_to_v2.sql) after `schema_v2.sql` to copy it into the new tables, then drop `courses` once you've verified the counts match.
 
 **2. Backend**
 
@@ -78,11 +83,24 @@ cp .env.example .env.local   # VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, VITE_A
 
 ### Usage
 
-Build the course database (scrapes syllabi/reviews, runs workload analysis, upserts to Supabase — see [Architecture](#architecture--pipeline) below):
+Build the course database (scrapes syllabi/reviews, runs workload analysis, upserts to Supabase — see [Architecture](#architecture--pipeline) below). This needs `src/data/courses_total.csv`, `src/data/courses_semester.csv`, `src/data/professors.csv`, `src/data/professors_semester.csv`, and `src/data/degree_path.json` to be populated first — every instructor referenced in a courses CSV must also appear in the matching professors CSV, or the pipeline fails fast before scraping anything.
 
 ```bash
-python -m src.main               # only re-analyzes courses whose content changed
-python -m src.main --force-refresh   # bypass the diff check and re-run everything
+# One-time: bulk-analyze every (course, instructor) pairing in courses_total.csv
+# against an empty courses_total/review — only ever needed once, or after a
+# full catalog refresh.
+python -m src.main --backfill
+
+# Every semester: sync courses_semester.csv against the current roster. Only
+# scrapes + re-analyzes a (course, instructor) pairing if it's new or its
+# syllabus/review content changed; everything else reuses the courses_total
+# cache. Always upserts courses_semester either way, since that's the only
+# record of "offered this semester."
+python -m src.main
+
+# Same as the semester sync, but bypasses the diff check and re-analyzes
+# every course in courses_semester.csv unconditionally.
+python -m src.main --force-refresh
 ```
 
 Run the Ask LionPlanner API:
@@ -102,23 +120,32 @@ npm run dev
 
 ### Data pipeline
 
-Each course goes from a syllabus URL and a review URL to a fully structured, five-dimension workload analysis stored in Supabase:
+The course database is split into three tables instead of one monolithic `courses` table, so that re-running the pipeline every semester doesn't mean re-scraping and re-analyzing the entire catalog from scratch:
+
+- **`review`** — one row per instructor: their scraped review page.
+- **`courses_total`** — a durable, semester-independent cache of every `(course_id, instructor_name)` pairing ever analyzed. The only table the analysis pipeline writes `workload_analysis` / `syllabus_summary` / embeddings to — a recurring course+instructor combo whose content hasn't changed skips re-analysis entirely and just reuses this row.
+- **`courses_semester`** — thin: just this semester's `(course_id, instructor_name)` roster plus `schedule_time`. Everything else the app needs is read through `courses_semester_view`, a join of all three tables, so there's exactly one stored copy of every value.
 
 ```mermaid
 flowchart LR
-    A["Syllabus URL\nReview URL"] -->|Firecrawl| B["Raw Markdown"]
-    B -->|rule-based\nnoise filtering| C["Filtered content"]
-    C -->|Haiku| D["WorkloadDigest\n(syllabus + review digest)"]
-    D -->|Sonnet, per category\n+ one-shot example| E["Workload analysis\nExam / Coding / Team Project /\nReading-Essay / Lab-Experiment"]
-    E --> F[("Supabase\ncourses table")]
+    A["courses_total.csv\n(full catalog)"] -->|"--backfill (one-time)"| S
+    B["courses_semester.csv\n(this semester's roster)"] -->|"default run (every semester)"| S["Scrape syllabus + reviews\n(Firecrawl → Jina fallback)"]
+    S --> D{"New pairing, or\nhash changed?"}
+    D -->|no| CACHE["Reuse cached analysis"]
+    D -->|yes| F["Filter + digest (Haiku)"]
+    F --> AN["Per-category analysis\n(Sonnet + one-shot example)"]
+    AN --> CT[("courses_total\n+ review")]
+    CACHE --> CT
+    CT --> CS[("courses_semester\n(schedule_time)")]
 ```
 
 - **Scraping**: [`src/web_functions/scrape.py`](src/web_functions/scrape.py) tries Firecrawl first (handles JS-rendered pages), falling back to the Jina Reader API.
 - **Noise filtering**: [`src/pipeline/content_filters.py`](src/pipeline/content_filters.py) strips boilerplate (honesty policy, office hours, images) from syllabi before any LLM sees them, and keeps only the "AI-Generated Summary" / "Most Agreed Review" sections from CULPA pages.
 - **Digest**: [`src/pipeline/digest.py`](src/pipeline/digest.py) uses a lightweight model (Haiku) to compress the filtered text down to whatever carries workload signal, preserving direct quotes verbatim so later steps can cite them.
 - **Category analysis**: [`src/pipeline/analyzer_pipeline.py`](src/pipeline/analyzer_pipeline.py) scores five workload dimensions — **Exam, Coding, Team Project, Reading/Essay, Lab/Experiment** — in parallel with Sonnet. Each category prompt includes a **fabricated one-shot example** (a realistic but invented course, syllabus excerpt, review excerpt, and scored output) to calibrate the model against a fixed anchor point, so scores stay comparable across very different courses.
-- A SHA-256 diff check ([`src/pipeline/diff_engine.py`](src/pipeline/diff_engine.py)) skips re-analysis for courses whose syllabus/review content hasn't changed, unless `--force-refresh` is passed.
-- The syllabus is also summarized and embedded (Voyage AI) for semantic search, and the result is upserted into the `courses` table in Supabase.
+- A SHA-256 diff check ([`src/pipeline/diff_engine.py`](src/pipeline/diff_engine.py)) is what decides "new pairing, or hash changed?" above — it skips re-scraping/re-analysis for a `(course, instructor)` pairing already in `courses_total` whose syllabus/review content hasn't changed, unless `--force-refresh` is passed.
+- The syllabus is also summarized and embedded (Voyage AI) for semantic search. `courses_semester` is always upserted at the end regardless of whether analysis ran or was skipped — it's the only record of "this course is offered this semester."
+- **Two entry points** (`src/main.py`): `python -m src.main --backfill` runs the one-time, unconditional bulk analysis of the full catalog (`courses_total.csv`) into an initially-empty database; the default `python -m src.main` is the recurring per-semester sync against `courses_semester.csv`, diff-checked as above. Before either runs, `validate_instructor_coverage` fails fast if a courses CSV references an instructor missing from its matching professors CSV.
 
 ### Backend: Ask LionPlanner
 
@@ -185,7 +212,11 @@ frontend/
     lib/         # Supabase client
     utils/       # filters, schedule conflict logic, localStorage persistence
 
-sql/schema.sql   # Supabase schema, RLS policies, match_courses RPC
+sql/
+  schema.sql          # degree_path, chats, and the legacy monolithic courses table
+  schema_v2.sql        # current course schema: review / courses_total / courses_semester,
+                        # courses_semester_view, match_courses RPC
+  migrate_to_v2.sql    # one-time data migration from the legacy courses table into v2
 ```
 
 ## Future Work

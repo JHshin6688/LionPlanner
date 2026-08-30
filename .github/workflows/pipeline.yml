@@ -1,14 +1,18 @@
 name: Run Data Pipeline
 
-# Manual-trigger only for now: src/main.py currently reads src/data/courses_mini.csv,
-# a local test file that isn't committed (blocked by .gitignore's `data/` rule).
-# Once src/data/courses_total.csv is committed and src/main.py points to it,
-# consider re-adding a `schedule:` trigger here for automatic re-runs.
+# Manual-trigger only: the default run (courses_semester.csv sync) is cheap since
+# it's diff-checked against courses_total, but --backfill re-analyzes the entire
+# catalog unconditionally, so this stays an explicit, occasional operation rather
+# than something that fires on a schedule.
 on:
   workflow_dispatch:
     inputs:
+      backfill:
+        description: "One-time bulk analysis of the full catalog (courses_total.csv) into an empty courses_total/review, instead of the regular semester sync"
+        type: boolean
+        default: false
       force_refresh:
-        description: "Bypass the SHA-256 diff engine and reanalyze every course"
+        description: "Semester sync only: bypass the SHA-256 diff engine and reanalyze every course in courses_semester.csv"
         type: boolean
         default: false
 
@@ -22,7 +26,7 @@ jobs:
           python-version: "3.11"
       - run: pip install -r requirements.txt
       - name: Run pipeline
-        run: python -m src.main ${{ inputs.force_refresh && '--force-refresh' || '' }}
+        run: python -m src.main ${{ inputs.backfill && '--backfill' || '' }} ${{ inputs.force_refresh && '--force-refresh' || '' }}
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
