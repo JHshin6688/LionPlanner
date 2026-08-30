@@ -30,6 +30,8 @@ export interface ScheduleSession {
 export const DAY_CODES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const
 export type DayCode = (typeof DAY_CODES)[number]
 
+// Mirrors courses_semester_view (sql/schema_v2.sql), not a raw table - `id`
+// is synthesized client-side from course_id (the view has no surrogate key).
 export interface Course {
   id: string
   course_id: string
@@ -41,14 +43,7 @@ export interface Course {
   schedule_time: ScheduleSession[]
   syllabus_url: string | null
   review_url: string | null
-  raw_syllabus: string | null
-  raw_reviews: string | null
-  syllabus_hash: string | null
-  review_hash: string | null
-  review_summary: string | null
   workload_analysis: WorkloadAnalysis
-  created_at: string
-  updated_at: string
 }
 
 export const WORKLOAD_DIMENSIONS = [

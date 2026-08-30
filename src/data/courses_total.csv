@@ -1,0 +1,36 @@
+CourseID,Title,Instructor,Department,Credits,Level,Syllabus URL
+COMS W4111,Introduction to Databases,Eugene Wu,COMS,3,4000,https://w4111.github.io/syllabus
+COMS W4115,Programming Languages and Translators,Stephen A. Edwards,COMS,3,4000,https://www.cs.columbia.edu/~sedwards/classes/2021/4115-spring/index.html
+COMS W4130,Principles and Practice of Parallel Programming,Martha Kim,COMS,3,4000,https://www.cs.columbia.edu/~martha/courses/4130/au13/
+COMS W4153,Cloud Computing,Donald Ferguson,COMS,3,4000,https://donald-f-ferguson.github.io/W4153-Cloud-Computing-Base/
+COMS W4170,User Interface Design,Steven Feiner,COMS,3,4000,https://www.cs.columbia.edu/~feiner/courses/csw4170/
+COMS W4180,Network Security,Steven M. Bellovin,COMS,3,4000,https://www.cs.columbia.edu/~smb/classes/f06/
+COMS W4187,Security Architecture and Engineering,Steven M. Bellovin,COMS,3,4000,https://www.cs.columbia.edu/~smb/classes/f16/
+COMS W4261,Introduction to Cryptography,Tal Malkin,COMS,3,4000,https://www.cs.columbia.edu/~tal/4261/
+COMS W4705,Natural Language Processing,John Hewitt,COMS,3,4000,https://www.cs.columbia.edu/~johnhew/coms4705
+COMS W4706,Spoken Language Processing,Julia Hirschberg,COMS,3,4000,https://www.cs.columbia.edu/~julia/courses/CS4706/syllabus11.htm
+COMS W4771,Machine Learning,Nakul Verma,COMS,3,4000,https://www.cs.columbia.edu/~verma/classes/ml/index.html
+COMS W4772,Advanced Machine Learning,Tony Jebara,COMS,3,4000,https://www.cs.columbia.edu/~jebara/6772/6772Info.htm
+COMS W4773,Machine Learning Theory,Daniel Hsu,COMS,3,4000,https://www.cs.columbia.edu/~djhsu/coms4773-s24/syllabus.html
+COMS W4775,Causal Inference,Elias Bareinboim,COMS,3,4000,https://causalai.net/cs4775_syllabus20f.pdf
+COMS W4776,Neural Networks & Deep Learning,Richard Zemel,COMS,3,4000,https://www.scribd.com/document/916572106/syllabus
+COMS E6118,Operating Systems II,Jason Nieh,COMS,3,6000,https://www.cs.columbia.edu/~nieh/teaching/e6118
+COMS E6121,Reliable Software,Junfeng Yang,COMS,3,6000,https://www.cs.columbia.edu/~junfeng/14fa-e6121
+COMS E6183,Security,Suman Jana,COMS,3,6000,https://www.cs.columbia.edu/~suman/coms_e6183.html
+COMS E6184,Anonymity & Privacy,Steven M. Bellovin,COMS,3,6000,https://www.cs.columbia.edu/~smb/classes/f23/
+COMS E6185,Intrusion and Anomaly Detection Systems,Salvatore Stolfo,COMS,3,6000,https://www.cs.columbia.edu/~sal/pages/IDS-Fall-2009-Syllabus.pdf
+COMS E6261,Advanced Cryptography,Tal Malkin,COMS,3,6000,https://www.cs.columbia.edu/~mchrist/teaching/6261/
+COMS E6706,Advanced Spoken Language Processing,Julia Hirschberg,COMS,3,6000,https://www.cs.columbia.edu/~julia/courses/CS6706-26/syllabus26.html
+COMS E6717,Information Theory,Xiaodong Wang,COMS,3,6000,https://www.ee.columbia.edu/~wangx/EE6717.pdf
+CSEE W4119,Computer Networks,Henning Schulzrinne,COMS,3,4000,https://www.cs.columbia.edu/~hgs/teaching/networks/
+CSEE W4840,Embedded Systems,Stephen A. Edwards,COMS,3,4000,https://www.cs.columbia.edu/~sedwards/classes/2026/4840-spring/index.html
+ELEN E4810,Digital Signal Processing,John Wright,ELEN,3,4000,https://www.ee.columbia.edu/~dpwe/e4810/
+ELEN E6829,Speech/Audio Processing-Recognition,Dan Ellis,ELEN,3,6000,https://www.ee.columbia.edu/~dpwe/e6820/
+PSYC G4232,Production and Perception of Language,Robert E. Remez,PSYC,3,4000,https://psychology.columbia.edu/sites/psychology.columbia.edu/files/content/Syllabus%204232%20S18.pdf
+PSYC G4236,Machine Intelligence,Trenton Jerde,PSYC,3,4000,https://psychology.columbia.edu/sites/psychology.columbia.edu/files/content/GU4236.pdf
+PSYC G4470,Psychology and Neuropsychology of Language,Michele Miozzo,PSYC,3,4000,https://psychology.columbia.edu/sites/default/files/content/GU4470.pdf
+PSYC G6006,Introduction to Statistical Modelling in Psychology,Niall Bolger,PSYC,3,6000,https://psychology.columbia.edu/sites/psychology.columbia.edu/files/content/6006_Y12.pdf
+STAT W4240,Data Mining,Daniel Rabinowitz,STAT,3,4000,https://www.columbia.edu/~kr2248/4240/datamining.html
+STAT W4249,Applied Data Science,Ying Liu,STAT,3,4000,https://github.com/TZstatsADS/ADS_Teaching/blob/master/CourseInfo/G5243_ADS.md
+STAT W5242,Advanced Machine Learning,John Cunningham,STAT,3,5000,https://www.columbia.edu/~skk2175/Courses/Syllabus_STAT_GR_5242.pdf
+STAT G6104,Computational Statistics,Liam Paninski,STAT,3,6000,https://sites.stat.columbia.edu/liam/teaching/compstat-spr24

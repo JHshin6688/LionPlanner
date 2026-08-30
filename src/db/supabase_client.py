@@ -4,62 +4,95 @@ from typing import Optional
 from src.config import get_supabase_client
 
 
-def get_course_hashes(course_id: str) -> Optional[dict]:
-    """Return {'syllabus_hash': ..., 'review_hash': ...} for a course, or
-    None if the course has never been stored."""
+def get_course_hashes(course_id: str, instructor_name: str) -> Optional[dict]:
+    """Return {'syllabus_hash': ..., 'review_hash': ...} for a (course,
+    instructor) pairing, or None if that pairing has never been analyzed
+    (i.e. no row in courses_total yet). syllabus_hash lives on courses_total,
+    review_hash on review - two lookups since they're no longer one row."""
     client = get_supabase_client()
-    response = (
-        client.table("courses")
-        .select("syllabus_hash, review_hash")
+    syllabus_response = (
+        client.table("courses_total")
+        .select("syllabus_hash")
         .eq("course_id", course_id)
+        .eq("instructor_name", instructor_name)
         .maybe_single()
         .execute()
     )
-    return response.data if response else None
+    if not syllabus_response or not syllabus_response.data:
+        return None
+
+    review_response = (
+        client.table("review")
+        .select("review_hash")
+        .eq("instructor_name", instructor_name)
+        .maybe_single()
+        .execute()
+    )
+    return {
+        "syllabus_hash": syllabus_response.data.get("syllabus_hash"),
+        "review_hash": review_response.data.get("review_hash") if review_response and review_response.data else None,
+    }
 
 
 def get_all_workload_analyses() -> list[dict]:
-    """course_id/course_title/workload_analysis for every course - used to
-    audit workload_analysis contents across the whole table (e.g. finding
-    courses whose scores all came back 0)."""
+    """course_id/course_title/workload_analysis for every (course, instructor)
+    pairing ever analyzed (not just this semester's offerings) - used to
+    audit workload_analysis contents (e.g. finding courses whose scores all
+    came back 0)."""
     client = get_supabase_client()
-    response = client.table("courses").select("course_id, course_title, workload_analysis").execute()
+    response = client.table("courses_total").select("course_id, course_title, workload_analysis").execute()
     return response.data or []
 
 
-def upsert_course_analysis(course_id: str, data: dict) -> bool:
-    """Insert or update the course row identified by course_id with the
-    given column values (raw text, hashes, workload_analysis, etc.)."""
+def upsert_review(instructor_name: str, data: dict) -> bool:
+    """Insert or update the review row for this instructor (review_url,
+    raw_reviews, review_hash)."""
+    client = get_supabase_client()
+    payload = {
+        **data,
+        "instructor_name": instructor_name,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+    client.table("review").upsert(payload, on_conflict="instructor_name").execute()
+    return True
+
+
+def upsert_course_total(course_id: str, instructor_name: str, data: dict) -> bool:
+    """Insert or update the courses_total row for this (course, instructor)
+    pairing - course facts, scraped syllabus, and workload analysis. The
+    durable, semester-independent cache the analysis pipeline writes to."""
     client = get_supabase_client()
     payload = {
         **data,
         "course_id": course_id,
+        "instructor_name": instructor_name,
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
-    client.table("courses").upsert(payload, on_conflict="course_id").execute()
+    client.table("courses_total").upsert(payload, on_conflict="course_id,instructor_name").execute()
     return True
 
 
-def update_course_fields(course_id: str, data: dict) -> bool:
-    """Patch only the given columns on an existing course row. Unlike
-    upsert_course_analysis, this is a plain UPDATE (not INSERT ... ON CONFLICT
-    DO UPDATE) - required for partial-column edits, since course_title/
-    instructor_name/department are NOT NULL with no default, so upsert's
-    speculative INSERT branch fails on them even when the row already exists
-    and would ultimately just be updated."""
+def upsert_courses_semester(course_id: str, instructor_name: str, schedule_time: list) -> bool:
+    """Insert or update this semester's offering row - just the (course,
+    instructor) pairing plus schedule_time. Must run for every course in a
+    pipeline pass even when courses_total's analysis was skipped (unchanged
+    hash), since this is the only place "offered this semester" is recorded."""
     client = get_supabase_client()
     payload = {
-        **data,
+        "course_id": course_id,
+        "instructor_name": instructor_name,
+        "schedule_time": schedule_time,
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
-    client.table("courses").update(payload).eq("course_id", course_id).execute()
+    client.table("courses_semester").upsert(payload, on_conflict="course_id,instructor_name").execute()
     return True
 
 
 def search_courses_by_embedding(embedding: list[float], match_count: int = 5) -> list[dict]:
-    """Vector-similarity search over courses.syllabus_summary_embedding via the
-    match_courses Postgres function (sql/schema2.sql) - supabase-py's query
-    builder can't express pgvector's <=> operator directly, hence the RPC."""
+    """Vector-similarity search over courses_total.syllabus_summary_embedding,
+    scoped to this semester's offerings, via the match_courses Postgres
+    function (sql/schema_v2.sql) - supabase-py's query builder can't express
+    pgvector's <=> operator directly, hence the RPC."""
     client = get_supabase_client()
     response = client.rpc(
         "match_courses",
@@ -69,13 +102,13 @@ def search_courses_by_embedding(embedding: list[float], match_count: int = 5) ->
 
 
 def get_course_schedule(course_id: str) -> Optional[list]:
-    """schedule_time for a single course by exact course_id, or None if the
-    course doesn't exist. Used by recommend_course's check_schedule_conflict
+    """schedule_time for a single course by exact course_id, or None if it's
+    not offered this semester. Used by recommend_course's check_schedule_conflict
     tool - a direct lookup rather than relying on the course having already
     turned up in a search_courses result this turn."""
     client = get_supabase_client()
     response = (
-        client.table("courses")
+        client.table("courses_semester")
         .select("schedule_time")
         .eq("course_id", course_id)
         .maybe_single()
@@ -87,16 +120,17 @@ def get_course_schedule(course_id: str) -> Optional[list]:
 
 
 def get_courses_by_ids(course_ids: list[str]) -> list[dict]:
-    """course_id/course_title/department/course_level for a set of course_ids.
-    Used to enrich check_degree_path's results with real titles instead of
-    letting the model guess them from a bare course_id list - exact match
-    only, so a track's course_id list may not 100% match rows here if the
-    scraped course_id formatting differs (see text_utils.py's docstring)."""
+    """course_id/course_title/department/course_level for a set of course_ids,
+    scoped to this semester's offerings. Used to enrich check_degree_path's
+    results with real titles instead of letting the model guess them from a
+    bare course_id list - exact match only, so a track's course_id list may
+    not 100% match rows here if the scraped course_id formatting differs
+    (see text_utils.py's docstring)."""
     if not course_ids:
         return []
     client = get_supabase_client()
     response = (
-        client.table("courses")
+        client.table("courses_semester_view")
         .select("course_id, course_title, department, course_level")
         .in_("course_id", course_ids)
         .execute()

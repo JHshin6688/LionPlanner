@@ -12,12 +12,20 @@ export function useCourses() {
 
     async function load() {
       setIsLoading(true)
-      const { data, error } = await supabase.from('courses').select('*').order('course_id')
+      const { data, error } = await supabase.from('courses_semester_view').select('*').order('course_id')
       if (cancelled) return
       if (error) {
         setError(error.message)
       } else {
-        setCourses((data ?? []).map((course) => ({ ...course, course_title: course.course_title.toUpperCase()})) as Course[])
+        // course_id doubles as `id` - courses_semester_view has no surrogate
+        // UUID column (the old `courses` table's `id` is gone in the new schema).
+        setCourses(
+          (data ?? []).map((course) => ({
+            ...course,
+            id: course.course_id,
+            course_title: course.course_title.toUpperCase(),
+          })) as Course[]
+        )
       }
       setIsLoading(false)
     }
