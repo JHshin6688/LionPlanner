@@ -170,6 +170,7 @@ returns table (
   course_level int,
   syllabus_summary text,
   schedule_time jsonb,
+  workload_analysis jsonb,
   similarity float
 )
 language sql stable
@@ -181,6 +182,7 @@ as $$
     ct.course_level,
     ct.syllabus_summary,
     cs.schedule_time,
+    ct.workload_analysis,
     1 - (ct.syllabus_summary_embedding <=> query_embedding) as similarity
   from courses_semester cs
   join courses_total ct on ct.course_id = cs.course_id and ct.instructor_name = cs.instructor_name
