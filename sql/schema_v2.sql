@@ -17,6 +17,50 @@
 create extension if not exists vector;
 
 -- ---------------------------------------------------------------------------
+-- degree_path and chats: unchanged from sql/schema.sql, carried over so
+-- schema_v2.sql alone is enough to set up the whole database (no need to
+-- also run the original schema.sql).
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS degree_path (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    degree_name VARCHAR(255) UNIQUE NOT NULL,          -- e.g., 'Computer Science'
+    required_courses JSONB NOT NULL DEFAULT '[]'::jsonb,  -- List of course_ids required for the degree
+    elective_courses JSONB NOT NULL DEFAULT '[]'::jsonb,  -- List of course_ids that can be taken as electives
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_degree_path_degree_name ON degree_path(degree_name);
+
+-- Ask LionPlanner chat history. One row per frontend chat session (session_id
+-- is the same uuid the frontend already generates for each session in
+-- localStorage). `turns` accumulates as the conversation goes:
+-- [{"user": "...", "ai": "..."}, ...]
+CREATE TABLE IF NOT EXISTS chats (
+    session_id UUID PRIMARY KEY,
+    title VARCHAR(255) NOT NULL DEFAULT 'New Chat',
+    turns JSONB NOT NULL DEFAULT '[]'::jsonb,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE degree_path ENABLE ROW LEVEL SECURITY;
+
+-- chats has no read/write policy at all: only the backend (SUPABASE_SERVICE_ROLE_KEY,
+-- which bypasses RLS) ever touches it. The frontend never talks to Supabase directly
+-- for chat - it goes through /api/chat, same as it always has.
+ALTER TABLE chats ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'degree_path' AND policyname = 'Allow public read'
+  ) THEN
+    CREATE POLICY "Allow public read" ON public.degree_path FOR SELECT TO PUBLIC USING (true);
+  END IF;
+END $$;
+
+-- ---------------------------------------------------------------------------
 -- review: professor roster + their scraped review page. Created first since
 -- courses_total references it.
 -- ---------------------------------------------------------------------------
