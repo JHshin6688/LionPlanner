@@ -1,0 +1,132 @@
+[
+  {
+    "id": "rc01",
+    "scenario": "topic_search",
+    "query": "Can you recommend a course on graph-based learning or reinforcement learning?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]},
+      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": null
+  },
+  {
+    "id": "rc02",
+    "scenario": "degree_track",
+    "query": "I'm trying to complete the Machine Learning track, and I'd like a recommendation for one core course I haven't taken yet that doesn't conflict with my schedule.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]},
+      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+    ],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The student already has COMS W4771 (a fundamental for this track) scheduled - a good answer recommends a *different* fundamental course, not W4771 again."
+  },
+  {
+    "id": "rc03",
+    "scenario": "specific_course_clean_fit",
+    "query": "Is COMS W4776 Neural Networks & Deep Learning worth taking? Does it conflict with my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]},
+      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4776 meets Tue/Thu 14:40-15:55, which does not overlap any of the student's scheduled courses - the answer should confirm it fits, not invent a conflict."
+  },
+  {
+    "id": "rc04",
+    "scenario": "specific_course_real_conflict",
+    "query": "I'm currently taking Network Security, and I'm considering also taking Security Architecture and Engineering. Would the schedule work out?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4180", "course_title": "Network Security", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "15:10", "end": "16:25"}, {"day": "Thu", "start": "15:10", "end": "16:25"}]}
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "COMS W4187 Security Architecture and Engineering meets Tue/Thu 14:40-15:55, which genuinely overlaps the student's scheduled COMS W4180 (Tue/Thu 15:10-16:25). The answer must clearly disclose this time conflict rather than presenting the two as compatible."
+  },
+  {
+    "id": "rc05",
+    "scenario": "degree_track",
+    "query": "Among the Natural Language Processing track's electives, which ones don't conflict with what's on my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4705", "course_title": "Natural Language Processing", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "14:40", "end": "15:55"}, {"day": "Thu", "start": "14:40", "end": "15:55"}]}
+    ],
+    "expected_degree_track": "Natural Language Processing",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": null
+  },
+  {
+    "id": "rc06",
+    "scenario": "empty_schedule_degree_track",
+    "query": "I haven't added anything to my schedule yet - what should I take first for the Software Systems track?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Software Systems",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Schedule is empty, so nothing can conflict - the answer should focus on which course(s) are the track's fundamentals rather than asking the student for a schedule it doesn't need yet."
+  },
+  {
+    "id": "rc07",
+    "scenario": "no_match",
+    "query": "Are there any courses on ancient Greek philosophy?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]}
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Our course DB is CS/engineering-focused and almost certainly has nothing on ancient Greek philosophy - a good answer says so plainly instead of forcing an unrelated recommendation to appear helpful."
+  },
+  {
+    "id": "rc08",
+    "scenario": "followup_topic",
+    "query": "Just recommend one.",
+    "chat_history": [
+      {"role": "user", "content": "I've been really into natural language processing lately."},
+      {"role": "assistant", "content": "That's great! Is there a specific area within NLP you're interested in, or are you looking for a general intro course?"},
+      {"role": "user", "content": "Just recommend one."}
+    ],
+    "scheduled_courses": [
+      {"course_id": "COMS W4705", "course_title": "Natural Language Processing", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "14:40", "end": "15:55"}, {"day": "Thu", "start": "14:40", "end": "15:55"}]}
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The recommendation should be NLP-relevant per the earlier turn, and should not simply recommend COMS W4705 again since that's already on the student's schedule."
+  },
+  {
+    "id": "rc09",
+    "scenario": "multi_candidate_conflict_aware",
+    "query": "Recommend 2-3 courses related to machine learning or deep learning. Make sure they don't conflict with my schedule.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]},
+      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The student explicitly asked for multiple candidates that all avoid schedule conflicts - the answer should not include one it already knows conflicts."
+  },
+  {
+    "id": "rc10",
+    "scenario": "schedule_fit_explicit",
+    "query": "Is there anything else worth taking in networking or systems? Something that doesn't conflict with my schedule.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4180", "course_title": "Network Security", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "15:10", "end": "16:25"}, {"day": "Thu", "start": "15:10", "end": "16:25"}]}
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": null
+  }
+]

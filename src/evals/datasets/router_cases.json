@@ -1,0 +1,287 @@
+[
+  {
+    "id": "rc01",
+    "query": "Can you recommend a machine learning course?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "recommend_course",
+    "notes": "Plain topic-based recommendation request, no schedule."
+  },
+  {
+    "id": "rc02",
+    "query": "Just recommend one then.",
+    "chat_history": [
+      {"role": "user", "content": "I've been really into deep learning lately."},
+      {"role": "assistant", "content": "Nice! Are you more interested in the theoretical side, or more on the applied/implementation side?"},
+      {"role": "user", "content": "Just recommend one then."}
+    ],
+    "scheduled_courses": [],
+    "expected_route": "recommend_course",
+    "notes": "Bare follow-up only classifiable via chat_history - router.py docstring calls this out explicitly."
+  },
+  {
+    "id": "rc03",
+    "query": "Is COMS W4771 worth taking? Does it conflict with my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]}
+    ],
+    "expected_route": "recommend_course",
+    "notes": "Named specific course NOT already on the schedule, even though the question also mentions schedule fit -> recommend_course per router.py's route description."
+  },
+  {
+    "id": "rc04",
+    "query": "What do I need to take first for the Machine Learning track?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "recommend_course",
+    "notes": "Degree/track requirement question."
+  },
+  {
+    "id": "rc05",
+    "query": "Aside from what's already on my schedule, are there any security-related courses that don't conflict?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4180", "course_title": "Network Security", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "15:10", "end": "16:25"}, {"day": "Thu", "start": "15:10", "end": "16:25"}]}
+    ],
+    "expected_route": "recommend_course",
+    "notes": "Candidate is explicitly not on the calendar even though the schedule is mentioned for conflict-checking purposes."
+  },
+  {
+    "id": "rc06",
+    "query": "Is COMS W4115, which isn't on my schedule right now, worth taking?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]}
+    ],
+    "expected_route": "recommend_course",
+    "notes": "Explicit 'not on my schedule' framing of a named course."
+  },
+  {
+    "id": "rc07",
+    "query": "What are the required courses for the Software Systems track to graduate?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "recommend_course",
+    "notes": "Degree requirement lookup, no topic search needed but still recommend_course's check_degree_path territory."
+  },
+  {
+    "id": "rc08",
+    "query": "Let me know if there's a course that covers graph neural networks.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "recommend_course",
+    "notes": "Topic search."
+  },
+  {
+    "id": "rc09",
+    "query": "Is there anything else worth taking besides what's already on my schedule? Take my schedule into account.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]}
+    ],
+    "expected_route": "recommend_course",
+    "notes": "The exact failure mode documented in router.py's docstring: without being told the schedule count, this reads as if no schedule exists and used to route to general_question asking for one that already exists."
+  },
+  {
+    "id": "rc10",
+    "query": "Does COMS W4153 Cloud Computing conflict with my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]}
+    ],
+    "expected_route": "recommend_course",
+    "notes": "Conflict-check question about a course not on the calendar."
+  },
+  {
+    "id": "wl01",
+    "query": "How's the workload for my current schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "Canonical workload question about the current schedule."
+  },
+  {
+    "id": "wl02",
+    "query": "How tough is this semester going to be?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4705", "course_title": "Natural Language Processing", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "14:40", "end": "15:55"}, {"day": "Thu", "start": "14:40", "end": "15:55"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "Implicit reference to 'this semester' meaning the current schedule."
+  },
+  {
+    "id": "wl03",
+    "query": "How hard is COMS W4771, which is on my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "Course IS already on the schedule (contrast with rc03/rc06, same phrasing pattern but opposite route)."
+  },
+  {
+    "id": "wl04",
+    "query": "So how many hours total should I expect to study?",
+    "chat_history": [
+      {"role": "user", "content": "I'm wondering how demanding my schedule is."},
+      {"role": "assistant", "content": "Let me analyze the workload of the courses currently on your schedule..."},
+      {"role": "user", "content": "So how many hours total should I expect to study?"}
+    ],
+    "scheduled_courses": [
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "Follow-up only interpretable via chat_history."
+  },
+  {
+    "id": "wl05",
+    "query": "Which course on my schedule has the most coding assignments?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4115", "course_title": "Programming Languages and Translators", "workload_analysis": {}, "schedule_time": [{"day": "Mon", "start": "17:40", "end": "18:55"}, {"day": "Wed", "start": "17:40", "end": "18:55"}]},
+      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "Dimension-specific workload question, scoped to scheduled courses."
+  },
+  {
+    "id": "wl06",
+    "query": "Which of the courses I'm currently taking has the biggest team-project component?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4153", "course_title": "Cloud Computing", "workload_analysis": {}, "schedule_time": [{"day": "Fri", "start": "13:10", "end": "15:40"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "'Currently taking' phrasing scoped to schedule."
+  },
+  {
+    "id": "wl07",
+    "query": "How's the workload for my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "analyze_workload",
+    "notes": "Intent is still about the (currently empty) schedule - router should classify by intent, not by whether scheduled_courses happens to be non-empty; analyze_workload itself will report there's nothing scheduled yet."
+  },
+  {
+    "id": "wl08",
+    "query": "Can I survive a semester with this schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4180", "course_title": "Network Security", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "15:10", "end": "16:25"}, {"day": "Thu", "start": "15:10", "end": "16:25"}]},
+      {"course_id": "COMS W4261", "course_title": "Introduction to Cryptography", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "14:40", "end": "15:55"}, {"day": "Thu", "start": "14:40", "end": "15:55"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "Indirect phrasing, no explicit 'workload' word."
+  },
+  {
+    "id": "wl09",
+    "query": "How much reading do the courses I'm enrolled in have?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4705", "course_title": "Natural Language Processing", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "14:40", "end": "15:55"}, {"day": "Thu", "start": "14:40", "end": "15:55"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "Dimension-specific (reading_essay) question scoped to enrolled courses."
+  },
+  {
+    "id": "wl10",
+    "query": "Which course on my current schedule has the biggest exam weighting?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
+      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+    ],
+    "expected_route": "analyze_workload",
+    "notes": "Dimension-specific (exam) question scoped to schedule."
+  },
+  {
+    "id": "gq01",
+    "query": "What should I do to prepare for an ML engineer job while doing a CS master's?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Career advice, no course lookup needed."
+  },
+  {
+    "id": "gq02",
+    "query": "What can you help me with?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Meta question about the assistant itself."
+  },
+  {
+    "id": "gq03",
+    "query": "What's the difference between a master's and PhD curriculum?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "General academic-structure question, not course-specific."
+  },
+  {
+    "id": "gq04",
+    "query": "Any tips for surviving grad school life?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Generic life-advice question."
+  },
+  {
+    "id": "gq05",
+    "query": "How should I prepare my portfolio for internship applications?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Career advice, no course/schedule lookup needed."
+  },
+  {
+    "id": "gq06",
+    "query": "What's your name?",
+    "chat_history": [
+      {"role": "user", "content": "Hi!"},
+      {"role": "assistant", "content": "Hello! How can I help you?"},
+      {"role": "user", "content": "What's your name?"}
+    ],
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Small talk follow-up."
+  },
+  {
+    "id": "gq07",
+    "query": "Can you just briefly explain what a graph neural network is?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Conceptual explanation request, not a course lookup or recommendation ask - tricky boundary with recommend_course topic search (rc08 asks for a *course*, this asks for a *concept*)."
+  },
+  {
+    "id": "gq08",
+    "query": "How can I build a good habit of reading papers?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Study-habits advice."
+  },
+  {
+    "id": "gq09",
+    "query": "How many recommendation letters do I need for a Columbia MSCS application?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Admissions logistics question, model can answer directly without looking up our course DB."
+  },
+  {
+    "id": "gq10",
+    "query": "How's the weather today?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_route": "general_question",
+    "notes": "Fully unrelated question - sanity check that the router doesn't force it into a course-related bucket."
+  }
+]
