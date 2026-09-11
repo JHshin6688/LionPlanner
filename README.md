@@ -196,8 +196,7 @@ flowchart TD
   - If it fails again, it gives up with a fixed fallback message instead of looping.
 
 ![Ask LionPlanner LangSmith trace](docs/langsmith-trace.png)
-*Actual `recommend_course` run: the router picks `recommend_course`, the agent calls `check_degree_path`, `search_courses`, and `check_schedule_conflict` tools, and `verify_grounding` passes it through with no retry needed.  
-[View Trace Example](https://smith.langchain.com/public/776094f5-44b4-4cab-a239-3b157c2a89f1/r/01a02263-5b00-7243-ac30-b8f7f28a3fe6?start_time=2026-08-21T03%3A35%3A31.840646Z)*
+*Actual `recommend_course` run: the agent calls `check_degree_path`, `search_courses`, and `check_schedule_conflict` tools as needed, and `verify_grounding` passes it through with no retry needed. [View Trace Example](https://smith.langchain.com/public/caac5d0e-1c32-46c0-be3a-88c0df784063/r/01a04e67-564f-7ff1-948e-2cb8ee1173f2?start_time=2026-08-29T16%3A43%3A10.287665Z)*
 
 ### Evaluating Ask LionPlanner
 
