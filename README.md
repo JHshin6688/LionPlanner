@@ -238,7 +238,7 @@ React 19 + Vite + Tailwind, talking to Supabase directly (read-only, anon key) f
 src/
   agents/        # LangGraph nodes
   api/           # FastAPI endpoint
-  evals/         # LangSmith eval harnesses for Ask LionPlanner (router + recommend_course)
+  evals/         # Evaluation for Ask LionPlanner (router + recommend_course)
   pipeline/      # DB construction pipeline (scrape → filter → digest → analyze course)
   db/            # Supabase client
   web_functions/ # Firecrawl / Jina scraping
