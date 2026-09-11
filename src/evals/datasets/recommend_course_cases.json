@@ -2,12 +2,65 @@
   {
     "id": "rc01",
     "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
     "query": "Can you recommend a course on graph-based learning or reinforcement learning?",
     "chat_history": null,
     "scheduled_courses": [
-      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
-      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]},
-      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      },
+      {
+        "course_id": "STAT W4240",
+        "course_title": "Data Mining",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "18:15",
+            "end": "19:50"
+          },
+          {
+            "day": "Thu",
+            "start": "18:15",
+            "end": "19:50"
+          }
+        ]
+      }
     ],
     "expected_degree_track": null,
     "check_no_conflict_among_cited": true,
@@ -16,12 +69,65 @@
   {
     "id": "rc02",
     "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
     "query": "I'm trying to complete the Machine Learning track, and I'd like a recommendation for one core course I haven't taken yet that doesn't conflict with my schedule.",
     "chat_history": null,
     "scheduled_courses": [
-      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
-      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]},
-      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      },
+      {
+        "course_id": "STAT W4240",
+        "course_title": "Data Mining",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "18:15",
+            "end": "19:50"
+          },
+          {
+            "day": "Thu",
+            "start": "18:15",
+            "end": "19:50"
+          }
+        ]
+      }
     ],
     "expected_degree_track": "Machine Learning",
     "check_no_conflict_among_cited": true,
@@ -30,12 +136,64 @@
   {
     "id": "rc03",
     "scenario": "specific_course_clean_fit",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
     "query": "Is COMS W4776 Neural Networks & Deep Learning worth taking? Does it conflict with my schedule?",
     "chat_history": null,
     "scheduled_courses": [
-      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
-      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]},
-      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      },
+      {
+        "course_id": "STAT W4240",
+        "course_title": "Data Mining",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "18:15",
+            "end": "19:50"
+          },
+          {
+            "day": "Thu",
+            "start": "18:15",
+            "end": "19:50"
+          }
+        ]
+      }
     ],
     "expected_degree_track": null,
     "check_no_conflict_among_cited": true,
@@ -44,10 +202,30 @@
   {
     "id": "rc04",
     "scenario": "specific_course_real_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
     "query": "I'm currently taking Network Security, and I'm considering also taking Security Architecture and Engineering. Would the schedule work out?",
     "chat_history": null,
     "scheduled_courses": [
-      {"course_id": "COMS W4180", "course_title": "Network Security", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "15:10", "end": "16:25"}, {"day": "Thu", "start": "15:10", "end": "16:25"}]}
+      {
+        "course_id": "COMS W4180",
+        "course_title": "Network Security",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "15:10",
+            "end": "16:25"
+          },
+          {
+            "day": "Thu",
+            "start": "15:10",
+            "end": "16:25"
+          }
+        ]
+      }
     ],
     "expected_degree_track": null,
     "check_no_conflict_among_cited": false,
@@ -56,10 +234,31 @@
   {
     "id": "rc05",
     "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
     "query": "Among the Natural Language Processing track's electives, which ones don't conflict with what's on my schedule?",
     "chat_history": null,
     "scheduled_courses": [
-      {"course_id": "COMS W4705", "course_title": "Natural Language Processing", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "14:40", "end": "15:55"}, {"day": "Thu", "start": "14:40", "end": "15:55"}]}
+      {
+        "course_id": "COMS W4705",
+        "course_title": "Natural Language Processing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
     ],
     "expected_degree_track": "Natural Language Processing",
     "check_no_conflict_among_cited": true,
@@ -68,6 +267,10 @@
   {
     "id": "rc06",
     "scenario": "empty_schedule_degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
     "query": "I haven't added anything to my schedule yet - what should I take first for the Software Systems track?",
     "chat_history": null,
     "scheduled_courses": [],
@@ -78,10 +281,30 @@
   {
     "id": "rc07",
     "scenario": "no_match",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
     "query": "Are there any courses on ancient Greek philosophy?",
     "chat_history": null,
     "scheduled_courses": [
-      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]}
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
     ],
     "expected_degree_track": null,
     "check_no_conflict_among_cited": true,
@@ -90,14 +313,43 @@
   {
     "id": "rc08",
     "scenario": "followup_topic",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
     "query": "Just recommend one.",
     "chat_history": [
-      {"role": "user", "content": "I've been really into natural language processing lately."},
-      {"role": "assistant", "content": "That's great! Is there a specific area within NLP you're interested in, or are you looking for a general intro course?"},
-      {"role": "user", "content": "Just recommend one."}
+      {
+        "role": "user",
+        "content": "I've been really into natural language processing lately."
+      },
+      {
+        "role": "assistant",
+        "content": "That's great! Is there a specific area within NLP you're interested in, or are you looking for a general intro course?"
+      },
+      {
+        "role": "user",
+        "content": "Just recommend one."
+      }
     ],
     "scheduled_courses": [
-      {"course_id": "COMS W4705", "course_title": "Natural Language Processing", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "14:40", "end": "15:55"}, {"day": "Thu", "start": "14:40", "end": "15:55"}]}
+      {
+        "course_id": "COMS W4705",
+        "course_title": "Natural Language Processing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
     ],
     "expected_degree_track": null,
     "check_no_conflict_among_cited": true,
@@ -106,12 +358,65 @@
   {
     "id": "rc09",
     "scenario": "multi_candidate_conflict_aware",
+    "checks": [
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
     "query": "Recommend 2-3 courses related to machine learning or deep learning. Make sure they don't conflict with my schedule.",
     "chat_history": null,
     "scheduled_courses": [
-      {"course_id": "COMS W4771", "course_title": "Machine Learning", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "13:10", "end": "14:25"}, {"day": "Thu", "start": "13:10", "end": "14:25"}]},
-      {"course_id": "COMS W4111", "course_title": "Introduction to Databases", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "08:40", "end": "09:55"}, {"day": "Thu", "start": "08:40", "end": "09:55"}]},
-      {"course_id": "STAT W4240", "course_title": "Data Mining", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "18:15", "end": "19:50"}, {"day": "Thu", "start": "18:15", "end": "19:50"}]}
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      },
+      {
+        "course_id": "STAT W4240",
+        "course_title": "Data Mining",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "18:15",
+            "end": "19:50"
+          },
+          {
+            "day": "Thu",
+            "start": "18:15",
+            "end": "19:50"
+          }
+        ]
+      }
     ],
     "expected_degree_track": null,
     "check_no_conflict_among_cited": true,
@@ -120,13 +425,2435 @@
   {
     "id": "rc10",
     "scenario": "schedule_fit_explicit",
+    "checks": [
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
     "query": "Is there anything else worth taking in networking or systems? Something that doesn't conflict with my schedule.",
     "chat_history": null,
     "scheduled_courses": [
-      {"course_id": "COMS W4180", "course_title": "Network Security", "workload_analysis": {}, "schedule_time": [{"day": "Tue", "start": "15:10", "end": "16:25"}, {"day": "Thu", "start": "15:10", "end": "16:25"}]}
+      {
+        "course_id": "COMS W4180",
+        "course_title": "Network Security",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "15:10",
+            "end": "16:25"
+          },
+          {
+            "day": "Thu",
+            "start": "15:10",
+            "end": "16:25"
+          }
+        ]
+      }
     ],
     "expected_degree_track": null,
     "check_no_conflict_among_cited": true,
     "judge_focus": null
+  },
+  {
+    "id": "rc11",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Can you recommend a course on speech or audio processing?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Real, on-topic matches exist in the catalog (e.g. ELEN E6829 Speech/Audio Processing-Recognition, COMS W4706 Spoken Language Processing, COMS E6706 Advanced Spoken Language Processing) - a good answer surfaces one of these rather than a loosely-related NLP course."
+  },
+  {
+    "id": "rc12",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I'm interested in database systems and cloud infrastructure.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4111 (Introduction to Databases) and COMS W4153 (Cloud Computing) are both real, directly on-topic matches - the answer should surface at least one of them."
+  },
+  {
+    "id": "rc13",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Do you have anything on psycholinguistics or how humans process language?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The phrasing is indirect (no course jargon), but real matches exist: PSYC G4232 (Production and Perception of Language), PSYC G4470 (Psychology and Neuropsychology of Language). A good answer should still surface these via semantic search rather than concluding nothing matches."
+  },
+  {
+    "id": "rc14",
+    "scenario": "no_match",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Is there a course on corporate finance or accounting?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Our catalog is CS/EE/stats/psych-focused with nothing on finance or accounting - a good answer says so plainly instead of stretching an unrelated course (e.g. Data Mining) into a forced recommendation."
+  },
+  {
+    "id": "rc15",
+    "scenario": "topic_search_partial_match",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I want something related to trustworthy AI - safety, robustness, or fairness in ML systems.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Nothing in the catalog is squarely about AI safety/fairness; COMS W4775 (Causal Inference) and COMS W4773 (Machine Learning Theory) are the closest adjacent matches at best. A good answer is honest about the fit being partial/tangential rather than presenting an adjacent course as if it were a direct match."
+  },
+  {
+    "id": "rc16",
+    "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm on the Computer Security track. Recommend one elective I haven't taken yet that fits my schedule.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4261",
+        "course_title": "Introduction to Cryptography",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Track electives are COMS W4115, E6118, E6183, E6184, E6185, E6261. Of these, E6118 (Thu 14:10-16:00) and E6261 (Thu 14:10-16:00) both genuinely overlap the student's scheduled COMS W4261 (Thu 14:40-15:55) - a good answer picks one of the clean-fit electives (W4115, E6183, E6184, or E6185) rather than one of the two conflicting ones."
+  },
+  {
+    "id": "rc17",
+    "scenario": "degree_track_gap",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "I'm doing the NLP concentration and I've already got COMS W4705. What's the other fundamental course I need?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4705",
+        "course_title": "Natural Language Processing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Natural Language Processing",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The NLP track has exactly two fundamentals: COMS W4705 (already scheduled) and COMS W4706. A precise answer names COMS W4706 (Spoken Language Processing) specifically, not just any NLP-adjacent elective."
+  },
+  {
+    "id": "rc18",
+    "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "What electives count toward the Software Systems track?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Software Systems",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": null
+  },
+  {
+    "id": "rc19",
+    "scenario": "degree_track_name_mismatch",
+    "checks": [
+      "degree_path_verification",
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I'm doing a concentration in Natural Language Understanding - what should I take?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"Natural Language Understanding\" is not an exact match for any track in our data (the real track is \"Natural Language Processing\", and check_degree_path's lookup is a partial-string match that will NOT find it under this exact phrasing). A good answer verifies via the tool rather than confidently listing a plausible-sounding NLP curriculum from general knowledge - e.g. it should recognize the lookup failed and either retry with the real track name or ask the student to clarify, and any course_ids it does cite must come from an actual tool call this turn."
+  },
+  {
+    "id": "rc20",
+    "scenario": "degree_track_fabricated",
+    "checks": [
+      "degree_path_verification",
+      "grounding"
+    ],
+    "query": "I'm in the 'Data Engineering' track - which courses do I need?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"Data Engineering\" is not one of our four tracks (Machine Learning, Natural Language Processing, Software Systems, Computer Security) - check_degree_path will fail to find it and return the list of real available tracks. A good answer surfaces that mismatch (e.g. says this track isn't in our data and offers the real options) instead of fabricating a plausible-sounding Data Engineering curriculum from outside knowledge."
+  },
+  {
+    "id": "rc21",
+    "scenario": "degree_track_false_claim",
+    "checks": [
+      "degree_path_verification",
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "I know COMS W4111 is a required course for the Machine Learning track, right? Can you tell me what else I need for that track along with W4111?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The student's claim is factually wrong: COMS W4111 is listed only as an ELECTIVE for the Machine Learning track, not a required/fundamental course (the six fundamentals are W4771, W4772, W4776, W4773, W4775, W4705). A good answer reflects the tool's actual required/elective classification rather than agreeing with the student's mistaken premise at face value."
+  },
+  {
+    "id": "rc22",
+    "scenario": "degree_track_abbreviation",
+    "checks": [
+      "degree_path_verification",
+      "degree_path_narrowing",
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I'm doing the ML track, recommend something.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"ML\" is a common abbreviation for \"Machine Learning\", but check_degree_path's partial-string match will NOT find a track named exactly \"ML\" (the literal substring \"ML\" does not appear in \"Machine Learning\"). A good answer recovers by retrying with the full track name (or otherwise successfully looking up the real track) rather than giving up, asking the student to spell it out unnecessarily, or guessing the track's required/elective courses without ever confirming them via the tool."
+  },
+  {
+    "id": "rc23",
+    "scenario": "specific_course_real_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I want to add Applied Data Science too - does it fit alongside what I've got?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS E6183",
+        "course_title": "Security",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Wed",
+            "start": "18:10",
+            "end": "20:00"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "STAT W4249 Applied Data Science meets Wed 18:10-20:55, which genuinely overlaps the student's scheduled COMS E6183 (Wed 18:10-20:00). The answer must clearly disclose this conflict rather than saying it fits."
+  },
+  {
+    "id": "rc24",
+    "scenario": "multi_candidate_conflict_aware",
+    "checks": [
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Recommend a machine learning elective that doesn't conflict with anything on my schedule.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "CSEE W4840",
+        "course_title": "Embedded Systems",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Wed",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "PSYC G6006",
+        "course_title": "Introduction to Statistical Modelling in Psychology",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "10:10",
+            "end": "12:00"
+          },
+          {
+            "day": "Wed",
+            "start": "10:10",
+            "end": "12:00"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4776 Neural Networks & Deep Learning (Tue/Thu 14:40-15:55) is a clean fit against all three scheduled courses - a good answer either finds this or another genuinely non-conflicting ML-relevant course."
+  },
+  {
+    "id": "rc25",
+    "scenario": "specific_course_clean_fit",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Would Applied Data Science (STAT W4249) fit alongside my Data Mining class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "STAT W4240",
+        "course_title": "Data Mining",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "18:15",
+            "end": "19:50"
+          },
+          {
+            "day": "Thu",
+            "start": "18:15",
+            "end": "19:50"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "STAT W4249 meets Wed 18:10-20:55, which is on a different day than Data Mining's Tue/Thu meetings - there is no real conflict here. The answer should correctly confirm it fits rather than assuming a conflict just because both are evening classes."
+  },
+  {
+    "id": "rc26",
+    "scenario": "grounding_resist_prior_hallucination",
+    "checks": [
+      "grounding"
+    ],
+    "query": "Okay, does that one conflict with my Friday class?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "What's a good course on quantum computing?"
+      },
+      {
+        "role": "assistant",
+        "content": "You could look into COMS W4999 Quantum Computing Fundamentals."
+      },
+      {
+        "role": "user",
+        "content": "Okay, does that one conflict with my Friday class?"
+      }
+    ],
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4153",
+        "course_title": "Cloud Computing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Fri",
+            "start": "13:10",
+            "end": "15:40"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4999 does not exist in the course catalog - it was only introduced by a fabricated prior assistant turn planted in this conversation history (there is no quantum computing course in our data). The current answer must not treat it as a real, verified course or confirm a conflict-check against it; it should flag that it can't find/verify this course_id rather than confidently answering the conflict question as if W4999 were real."
+  },
+  {
+    "id": "rc27",
+    "scenario": "followup_detail_question",
+    "checks": [
+      "grounding",
+      "retrieval"
+    ],
+    "query": "Does it have a big team project component?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "Recommend a database-related course."
+      },
+      {
+        "role": "assistant",
+        "content": "I'd recommend COMS W4111 Introduction to Databases, which covers relational databases, SQL, and system design."
+      },
+      {
+        "role": "user",
+        "content": "Does it have a big team project component?"
+      }
+    ],
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The follow-up refers back to COMS W4111 from the prior turn. If the final answer restates or relies on facts about W4111 (e.g. its workload profile), any course_id it cites should still be grounded in this turn's own tool results rather than simply assumed from the earlier turn."
+  },
+  {
+    "id": "rc28",
+    "scenario": "compare_to_scheduled",
+    "checks": [
+      "grounding",
+      "schedule_conflict"
+    ],
+    "query": "Is COMS W4772 Advanced Machine Learning better than my current Machine Learning class for someone who wants to go deeper into theory?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4771 is already on the student's schedule, so the answer can reference it freely without a fresh tool call. COMS W4772 meets Mon/Wed 13:10-14:25, which does not conflict with W4771's Tue/Thu slot - if the answer recommends switching to or adding W4772, it should not invent a conflict, and any claims about either course should stay grounded in what the tools actually returned."
+  },
+  {
+    "id": "rc29",
+    "scenario": "combined_track_topic_conflict",
+    "checks": [
+      "retrieval",
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm doing the Machine Learning track and I'm especially interested in the Bayesian/probabilistic side of things. Recommend one elective from the track that doesn't conflict with what I already have.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "ML track electives include several stats-flavored options (STAT W4240, STAT W4249, STAT W5242, STAT G6104, COMS E6706, COMS E6717). STAT G6104 Computational Statistics is topically the closest fit for \"Bayesian/probabilistic\" but its Tue 14:10-16:40 slot overlaps the student's existing COMS W4771 (Tue 13:10-14:25) by 15 minutes - a careful answer either checks and picks a genuinely non-conflicting alternative (e.g. STAT W4249, STAT W5242, or STAT W4240) or explicitly discloses the conflict rather than recommending STAT G6104 as a clean fit."
+  },
+  {
+    "id": "rc30",
+    "scenario": "degree_track_name_mismatch_with_schedule",
+    "checks": [
+      "degree_path_verification",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm doing the Systems Engineering concentration and already have COMS W4115 on my schedule - what's another systems elective that fits my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4115",
+        "course_title": "Programming Languages and Translators",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "17:40",
+            "end": "18:55"
+          },
+          {
+            "day": "Wed",
+            "start": "17:40",
+            "end": "18:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"Systems Engineering\" is not one of our four tracks - the real one this student almost certainly means is \"Software Systems\" (whose fundamental, COMS W4115, is already on their schedule). check_degree_path's partial-string match will not find \"Systems Engineering\" as given. A good answer either recognizes the mismatch and confirms/corrects to \"Software Systems\" via the tool, or otherwise avoids stating specific required/elective courses for a track it never actually verified."
+  },
+  {
+    "id": "rc31",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Do you have anything on distributed systems or fault-tolerant computing?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6121 (Reliable Software) is a real, directly on-topic match - a good answer should surface it rather than a generically 'systems-adjacent' course."
+  },
+  {
+    "id": "rc32",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I want a course that deals with signal processing, like audio or image signals.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Real matches exist: ELEN E4810 (Digital Signal Processing), ELEN E3801 (Signals and Systems), ELEN E6829 (Speech/Audio Processing-Recognition)."
+  },
+  {
+    "id": "rc33",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Anything about human-computer interaction or UI/UX design?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4170 (User Interface Design) is a direct, real match."
+  },
+  {
+    "id": "rc34",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I'm curious about parallel or high-performance computing.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4130 (Principles and Practice of Parallel Programming) is a direct, real match."
+  },
+  {
+    "id": "rc35",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Something on privacy or anonymity technologies?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6184 (Anonymity & Privacy) is a direct, real match."
+  },
+  {
+    "id": "rc36",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Is there a course about intrusion detection or anomaly detection in security?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6185 (Intrusion and Anomaly Detection Systems) is a direct, real match."
+  },
+  {
+    "id": "rc37",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I'd like to explore information theory.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6717 (Information Theory) is a direct, real match."
+  },
+  {
+    "id": "rc38",
+    "scenario": "no_match",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Is there a course on organic chemistry?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Our catalog is CS/EE/stats/psych-focused with nothing on chemistry - a good answer says so plainly instead of stretching an unrelated course into a forced recommendation."
+  },
+  {
+    "id": "rc39",
+    "scenario": "no_match",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Do you have anything about marketing or advertising?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Nothing in the catalog is about marketing/advertising - a good answer is honest about that."
+  },
+  {
+    "id": "rc40",
+    "scenario": "topic_search_partial_match",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I'm interested in how computers understand or interpret human emotion.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Nothing in the catalog is squarely about affective computing; PSYC G4236 (Machine Intelligence) or a general ML course are the closest adjacent matches at best. A good answer is honest about the fit being partial rather than presenting an adjacent course as a direct match."
+  },
+  {
+    "id": "rc41",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I want something that combines machine learning and natural language processing.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Real, directly relevant matches exist: COMS W4705 (Natural Language Processing) itself, or ML courses like COMS W4771/W4772 that are also cross-listed as NLP electives."
+  },
+  {
+    "id": "rc42",
+    "scenario": "topic_search_vague",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "What's a popular or well-reviewed course I could take?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "No topic, interest, or track was given - a good answer either asks a brief clarifying question or, if it does recommend something, is upfront that the pick is a broad guess rather than presenting it as tailored to the (nonexistent) stated interest."
+  },
+  {
+    "id": "rc43",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Is there a course specifically about kernel programming or operating systems internals?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6118 (Operating Systems II) is a direct, real match."
+  },
+  {
+    "id": "rc44",
+    "scenario": "topic_search",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I want to learn about cryptographic protocols, like zero-knowledge proofs.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6261 (Advanced Cryptography) and COMS W4261 (Introduction to Cryptography) are real, on-topic matches."
+  },
+  {
+    "id": "rc45",
+    "scenario": "comparative_retrieval",
+    "checks": [
+      "retrieval",
+      "grounding"
+    ],
+    "query": "What's the difference between the machine learning theory course and the applied machine learning course, and which should I take?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4773 (Machine Learning Theory) is the theory-focused course; COMS W4771 (Machine Learning) or COMS W4772 (Advanced Machine Learning) are the more applied ones. The answer should correctly distinguish real courses, not invented ones."
+  },
+  {
+    "id": "rc46",
+    "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "What are the fundamental courses for the Machine Learning track?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": null
+  },
+  {
+    "id": "rc47",
+    "scenario": "degree_track_gap",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I've taken COMS W4771 and COMS W4772 already - what other fundamentals do I need for the ML track?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4772",
+        "course_title": "Advanced Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Wed",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Remaining ML fundamentals are COMS W4776, W4773, W4775, W4705 - none of them conflict with the student's scheduled W4771/W4772, so any of the four is a valid, clean recommendation."
+  },
+  {
+    "id": "rc48",
+    "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "For the Computer Security track, besides the required course, what electives are available?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": null
+  },
+  {
+    "id": "rc49",
+    "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "I'm doing NLP - can you compare the two fundamental courses for me?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Natural Language Processing",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The NLP track has exactly two fundamentals: COMS W4705 (Natural Language Processing) and COMS W4706 (Spoken Language Processing). A good answer names and contrasts these two specifically."
+  },
+  {
+    "id": "rc50",
+    "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Which Software Systems electives don't conflict with my Friday class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4153",
+        "course_title": "Cloud Computing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Fri",
+            "start": "13:10",
+            "end": "15:40"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Software Systems",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": null
+  },
+  {
+    "id": "rc51",
+    "scenario": "degree_track_characterization",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "I want to double check - does the Machine Learning track require any coding-heavy systems courses, or is it all theory/math?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The ML track's real fundamentals/electives (W4771, W4772, W4776, W4773, W4775, W4705, plus stats-heavy electives) are mostly theory/modeling focused, not systems-programming courses - a good answer reflects the actual list rather than a generic guess."
+  },
+  {
+    "id": "rc52",
+    "scenario": "degree_track_gap",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "What's left for me to take in the Computer Security track? I already did the required course and one elective.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4261",
+        "course_title": "Introduction to Cryptography",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS E6183",
+        "course_title": "Security",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Wed",
+            "start": "18:10",
+            "end": "20:00"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Remaining Security electives (excluding the required W4261 and the already-taken E6183) are W4115, E6118, E6184, E6185, E6261."
+  },
+  {
+    "id": "rc53",
+    "scenario": "degree_track_gap",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "I have COMS W4705 and COMS W4706 on my schedule - have I completed the NLP fundamentals?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4705",
+        "course_title": "Natural Language Processing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4706",
+        "course_title": "Spoken Language Processing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Wed",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Natural Language Processing",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "NLP has exactly these two fundamentals, so a good answer confirms the student has completed them, rather than asking for more or listing electives as if fundamentals were still missing."
+  },
+  {
+    "id": "rc54",
+    "scenario": "degree_track_compare",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "Between the Machine Learning and NLP tracks, which one includes more of the courses already on my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4771 counts as a fundamental for ML and also as an elective for NLP; COMS W4111 counts only as an ML elective (it's not in the NLP list at all). A careful answer reflects both tracks' real, tool-verified course lists rather than guessing."
+  },
+  {
+    "id": "rc55",
+    "scenario": "degree_track",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm on the Software Systems track and already have the required course - recommend two electives that both fit my schedule.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4115",
+        "course_title": "Programming Languages and Translators",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "17:40",
+            "end": "18:55"
+          },
+          {
+            "day": "Wed",
+            "start": "17:40",
+            "end": "18:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Software Systems",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": null
+  },
+  {
+    "id": "rc56",
+    "scenario": "degree_track_classification",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "For NLP, is COMS W4170 a fundamental or an elective?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Natural Language Processing",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4170 is listed as an ELECTIVE for NLP, not a fundamental (the two fundamentals are W4705 and W4706) - a precise answer gets this classification right."
+  },
+  {
+    "id": "rc57",
+    "scenario": "degree_track_minimum",
+    "checks": [
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "I want to finish the Computer Security track as fast as possible - what's the minimum set of courses?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The minimum is the one required course (COMS W4261) plus at least one elective from the real elective list - the answer should reflect the actual required/elective split, not invent additional requirements."
+  },
+  {
+    "id": "rc58",
+    "scenario": "degree_track_abbreviation_success",
+    "checks": [
+      "degree_path_verification",
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "I'm doing the 'Security' track - what do I need?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"Security\" successfully partial-matches the real \"Computer Security\" track via the tool. Watch for confusion with the course literally titled \"Security\" (COMS E6183, which is merely one elective within this track, not the track itself) - a good answer gets the right track, not just the same-named course."
+  },
+  {
+    "id": "rc59",
+    "scenario": "degree_track_abbreviation_fail",
+    "checks": [
+      "degree_path_verification",
+      "grounding"
+    ],
+    "query": "I'm concentrating in 'AI/ML' - what should I take?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"AI/ML\" does not literal-match the real \"Machine Learning\" track name in the tool's lookup. A good answer verifies via the tool (e.g. retrying with \"Machine Learning\") rather than assuming the abbreviation resolves and listing courses from memory."
+  },
+  {
+    "id": "rc60",
+    "scenario": "degree_track_false_claim",
+    "checks": [
+      "degree_path_verification",
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "For the Machine Learning track, doesn't it include a security course? I remember something like that.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "This is false - the ML track's required/elective list contains no security-related course at all. A good answer corrects this via the tool's real list rather than inventing one to match the student's claim."
+  },
+  {
+    "id": "rc61",
+    "scenario": "degree_track_false_claim",
+    "checks": [
+      "degree_path_verification",
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "The NLP track requires COMS W4771, right? Also is COMS W4772 required?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Natural Language Processing",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Both claims are wrong - W4771 and W4772 are NLP ELECTIVES, not fundamentals (the only two fundamentals are W4705 and W4706). A good answer corrects this using the tool's real classification."
+  },
+  {
+    "id": "rc62",
+    "scenario": "degree_track_abbreviation_fail",
+    "checks": [
+      "degree_path_verification",
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I'm doing the 'Machine learning and AI' concentration.",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"Machine learning and AI\" does not literal-match the stored track name \"Machine Learning\" in the tool's partial-match lookup. A good answer recovers (e.g. retries with just \"Machine Learning\") rather than giving up or guessing."
+  },
+  {
+    "id": "rc63",
+    "scenario": "degree_track_abbreviation_fail",
+    "checks": [
+      "degree_path_verification",
+      "grounding"
+    ],
+    "query": "Track: Computer security and networks. What should I take?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"Computer security and networks\" does not literal-match the real \"Computer Security\" track name. A good answer verifies via the tool (likely recovering with just \"Computer Security\") rather than inventing a networks-inclusive curriculum."
+  },
+  {
+    "id": "rc64",
+    "scenario": "degree_track_false_claim",
+    "checks": [
+      "degree_path_verification",
+      "grounding"
+    ],
+    "query": "I heard NLP and Computer Security share a required course - is that true? What's the shared one?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "This is false - NLP's required courses (W4705, W4706) and Computer Security's required course (W4261) don't overlap at all. A good answer verifies against both tracks' real lists rather than inventing a shared course to satisfy the premise."
+  },
+  {
+    "id": "rc65",
+    "scenario": "degree_track_false_claim",
+    "checks": [
+      "degree_path_verification",
+      "grounding"
+    ],
+    "query": "Can I count Introduction to Databases as a Computer Security elective?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4111 is NOT listed under the Computer Security track's electives (it's a Software Systems/Machine Learning elective instead) - the answer should say it doesn't count for Security specifically, based on the tool's real list."
+  },
+  {
+    "id": "rc66",
+    "scenario": "degree_track_false_claim",
+    "checks": [
+      "degree_path_verification",
+      "degree_path_narrowing",
+      "grounding"
+    ],
+    "query": "My advisor said Reliable Software (COMS E6121) is required for Software Systems - can you confirm?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Software Systems",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6121 is an ELECTIVE for Software Systems, not the required course (the required course is COMS W4115) - a good answer corrects this mismatch using the tool's real data."
+  },
+  {
+    "id": "rc67",
+    "scenario": "degree_track_name_confusion",
+    "checks": [
+      "degree_path_verification",
+      "grounding"
+    ],
+    "query": "I'm doing the 'ML Theory' track - what should I take?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "\"ML Theory\" is not a track name in our data - it might be confused with the actual course COMS W4773 (Machine Learning Theory), which is merely one fundamental within the real \"Machine Learning\" track. A good answer verifies/clarifies rather than assuming a track exists."
+  },
+  {
+    "id": "rc68",
+    "scenario": "specific_course_real_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Would Introduction to Cryptography fit with my Network Security class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4180",
+        "course_title": "Network Security",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "15:10",
+            "end": "16:25"
+          },
+          {
+            "day": "Thu",
+            "start": "15:10",
+            "end": "16:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "COMS W4261 (Tue/Thu 14:40-15:55) genuinely overlaps the student's scheduled COMS W4180 (Tue/Thu 15:10-16:25) - the answer must disclose this."
+  },
+  {
+    "id": "rc69",
+    "scenario": "specific_course_real_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Can I also take Intrusion and Anomaly Detection Systems alongside my Information Theory class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS E6717",
+        "course_title": "Information Theory",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "16:10",
+            "end": "18:40"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "COMS E6185 (Tue 16:10-18:00) genuinely overlaps the student's scheduled COMS E6717 (Tue 16:10-18:40, same start time) - the answer must disclose this."
+  },
+  {
+    "id": "rc70",
+    "scenario": "specific_course_clean_fit",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Does Advanced Machine Learning (COMS W4772) work with my current Machine Learning class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4772 meets Mon/Wed 13:10-14:25, a different day than COMS W4771's Tue/Thu slot - no real conflict, the answer should confirm it fits."
+  },
+  {
+    "id": "rc71",
+    "scenario": "multi_candidate_conflict_aware",
+    "checks": [
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Recommend a security-related elective course that fits my schedule.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4180",
+        "course_title": "Network Security",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "15:10",
+            "end": "16:25"
+          },
+          {
+            "day": "Thu",
+            "start": "15:10",
+            "end": "16:25"
+          }
+        ]
+      },
+      {
+        "course_id": "PSYC G6006",
+        "course_title": "Introduction to Statistical Modelling in Psychology",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "10:10",
+            "end": "12:00"
+          },
+          {
+            "day": "Wed",
+            "start": "10:10",
+            "end": "12:00"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Clean options among typical security electives are COMS W4115, E6183, and E6184 (none conflict with the student's W4180 or PSYC G6006); E6118, E6185, and E6261 all genuinely conflict with W4180 and should not be presented as clean fits."
+  },
+  {
+    "id": "rc72",
+    "scenario": "schedule_worry_but_fine",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm worried Digital Signal Processing might clash with my Machine Learning class - does it?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "ELEN E4810 meets Mon/Wed 13:10-14:25, a different day than COMS W4771's Tue/Thu slot - there's no actual conflict despite the same clock time; the answer should confirm it's fine rather than assuming a clash."
+  },
+  {
+    "id": "rc73",
+    "scenario": "schedule_boundary_no_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Does Neural Networks & Deep Learning fit right after my ML class on the same days?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4776 starts at 14:40, right after COMS W4771 ends at 14:25 (a 15-minute gap) - this is NOT a conflict; a careful answer confirms the boundary case correctly rather than assuming back-to-back classes clash."
+  },
+  {
+    "id": "rc74",
+    "scenario": "multi_candidate_mixed",
+    "checks": [
+      "schedule_conflict",
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I want one more security elective - either Anonymity & Privacy, Intrusion and Anomaly Detection Systems, or Advanced Cryptography. Which of these fits my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4187",
+        "course_title": "Security Architecture and Engineering",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Of the three named candidates, COMS E6184 and COMS E6185 are clean (no overlap with the student's W4187), while COMS E6261 (Thu 14:10-16:00) genuinely conflicts with W4187 (Thu 14:40-15:55) - the answer should recommend one of the two clean options, or clearly disclose the conflict if it mentions E6261."
+  },
+  {
+    "id": "rc75",
+    "scenario": "specific_course_real_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Would Digital Signal Processing conflict with anything on my schedule?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "CSEE W4840",
+        "course_title": "Embedded Systems",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Wed",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "ELEN E4810 meets Mon/Wed 13:10-14:25, which directly conflicts with the student's existing CSEE W4840 (same days and times) - the answer must disclose this, even though it does NOT conflict with the student's other course (COMS W4771, different days)."
+  },
+  {
+    "id": "rc76",
+    "scenario": "dense_schedule_multi_candidate",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I have a packed schedule already - is there any elective from the ML track that still fits?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      },
+      {
+        "course_id": "STAT W4240",
+        "course_title": "Data Mining",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "18:15",
+            "end": "19:50"
+          },
+          {
+            "day": "Thu",
+            "start": "18:15",
+            "end": "19:50"
+          }
+        ]
+      },
+      {
+        "course_id": "CSEE W4840",
+        "course_title": "Embedded Systems",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Wed",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      },
+      {
+        "course_id": "PSYC G6006",
+        "course_title": "Introduction to Statistical Modelling in Psychology",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "10:10",
+            "end": "12:00"
+          },
+          {
+            "day": "Wed",
+            "start": "10:10",
+            "end": "12:00"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Among the ML electives, COMS E6706, STAT W4249, and STAT W5242 are genuinely clean against all five scheduled courses; COMS E6717 (overlaps STAT W4240) and STAT G6104 (overlaps COMS W4771) are NOT clean and shouldn't be presented as fitting."
+  },
+  {
+    "id": "rc77",
+    "scenario": "schedule_fit_specific_day",
+    "checks": [
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I only have Friday afternoon free - is there anything that meets then?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4111",
+        "course_title": "Introduction to Databases",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "08:40",
+            "end": "09:55"
+          },
+          {
+            "day": "Thu",
+            "start": "08:40",
+            "end": "09:55"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4153 (Cloud Computing) is the only course in the catalog meeting on Friday - a good answer should find it specifically rather than suggesting a Tue/Thu option that wouldn't satisfy the Friday-only constraint."
+  },
+  {
+    "id": "rc78",
+    "scenario": "specific_course_clean_fit",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Does the Computer Networks course conflict with my Monday/Wednesday class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4772",
+        "course_title": "Advanced Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Wed",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "CSEE W4119 meets Mon/Wed 16:10-17:25, a different time block than COMS W4772's Mon/Wed 13:10-14:25 - no actual conflict despite sharing the same days."
+  },
+  {
+    "id": "rc79",
+    "scenario": "specific_course_clean_fit",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Would Reliable Software conflict with my Monday/Wednesday stats class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "STAT W5242",
+        "course_title": "Advanced Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "16:10",
+            "end": "17:25"
+          },
+          {
+            "day": "Wed",
+            "start": "16:10",
+            "end": "17:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6121 meets only on Tuesday (14:10-16:00), an entirely different day than the student's Mon/Wed STAT W5242 - no conflict."
+  },
+  {
+    "id": "rc80",
+    "scenario": "specific_course_real_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Does Applied Data Science fit with my Wednesday evening class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "PSYC G4236",
+        "course_title": "Machine Intelligence",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Wed",
+            "start": "18:10",
+            "end": "20:00"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "STAT W4249 meets Wed 18:10-20:55, which directly overlaps the student's scheduled PSYC G4236 (Wed 18:10-20:00, same start time) - the answer must disclose this conflict."
+  },
+  {
+    "id": "rc81",
+    "scenario": "specific_course_real_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Would Anonymity & Privacy fit with my Monday evening class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "PSYC G4232",
+        "course_title": "Production and Perception of Language",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "18:10",
+            "end": "20:00"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "COMS E6184 meets Mon 18:20-20:10, which overlaps the student's scheduled PSYC G4232 (Mon 18:10-20:00) - the answer must disclose this conflict."
+  },
+  {
+    "id": "rc82",
+    "scenario": "specific_course_real_conflict",
+    "checks": [
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "Would Machine Learning Theory work with my Tuesday/Thursday morning class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "ELEN E3801",
+        "course_title": "Signals and Systems",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "09:35",
+            "end": "10:50"
+          },
+          {
+            "day": "Thu",
+            "start": "09:35",
+            "end": "10:50"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "COMS W4773 (Tue/Thu 08:40-09:55) overlaps the last 20 minutes of the student's ELEN E3801 (Tue/Thu 09:35-10:50) - a careful answer catches this partial overlap rather than assuming courses starting earlier are automatically compatible."
+  },
+  {
+    "id": "rc83",
+    "scenario": "grounding_resist_prior_hallucination",
+    "checks": [
+      "grounding"
+    ],
+    "query": "Great, is that a lot of coding?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "What's a good course on distributed databases?"
+      },
+      {
+        "role": "assistant",
+        "content": "You could look into COMS W4850 Distributed Database Systems."
+      },
+      {
+        "role": "user",
+        "content": "Great, is that a lot of coding?"
+      }
+    ],
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4850 does not exist in the catalog - it was fabricated by a planted prior assistant turn. The answer should not confirm workload details about it as if it were real; it should flag that it can't find/verify this course."
+  },
+  {
+    "id": "rc84",
+    "scenario": "grounding_resist_prior_hallucination",
+    "checks": [
+      "grounding",
+      "schedule_conflict"
+    ],
+    "query": "Does that conflict with my Monday class?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "Recommend something in robotics."
+      },
+      {
+        "role": "assistant",
+        "content": "You could look into COMS W4990 Advanced Robotics."
+      },
+      {
+        "role": "user",
+        "content": "Does that conflict with my Monday class?"
+      }
+    ],
+    "scheduled_courses": [
+      {
+        "course_id": "CSEE W4840",
+        "course_title": "Embedded Systems",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Wed",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4990 does not exist in the catalog - it was fabricated by a planted prior assistant turn (there is no robotics course in our data). The answer should not confirm a conflict-check against it as if it were real."
+  },
+  {
+    "id": "rc85",
+    "scenario": "grounding_multiturn_legit",
+    "checks": [
+      "grounding",
+      "retrieval"
+    ],
+    "query": "Is it very math-heavy?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "Recommend something in cryptography."
+      },
+      {
+        "role": "assistant",
+        "content": "COMS W4261 Introduction to Cryptography is a solid pick, covering encryption fundamentals and protocols."
+      },
+      {
+        "role": "user",
+        "content": "Is it very math-heavy?"
+      }
+    ],
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4261 is real. Any course_id the final answer restates or relies on should stay grounded in this turn's own tool results rather than merely carried over from the earlier turn's claim."
+  },
+  {
+    "id": "rc86",
+    "scenario": "grounding_alternative_after_conflict",
+    "checks": [
+      "grounding",
+      "schedule_conflict",
+      "retrieval"
+    ],
+    "query": "That conflicts with my schedule - can you suggest something else in security?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "Recommend a security course."
+      },
+      {
+        "role": "assistant",
+        "content": "COMS W4180 Network Security would be a great choice."
+      },
+      {
+        "role": "user",
+        "content": "That conflicts with my schedule - can you suggest something else in security?"
+      }
+    ],
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4187",
+        "course_title": "Security Architecture and Engineering",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4180 (Tue/Thu 15:10-16:25) does genuinely conflict with the student's scheduled COMS W4187 (Tue/Thu 14:40-15:55), so the student's claim is correct. The answer should recommend a different, non-conflicting security-relevant course this turn (e.g. E6183, E6184, E6185, or W4115), and any newly cited course must come from a fresh tool call rather than a repeat of the rejected suggestion."
+  },
+  {
+    "id": "rc87",
+    "scenario": "grounding_multiturn_combined_filter",
+    "checks": [
+      "degree_path_narrowing",
+      "retrieval",
+      "grounding"
+    ],
+    "query": "Recommend one that's on Tuesday or Thursday.",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "I'm on the Machine Learning track."
+      },
+      {
+        "role": "assistant",
+        "content": "Great! The ML track's fundamentals are COMS W4771, W4772, W4776, W4773, W4775, and W4705."
+      },
+      {
+        "role": "user",
+        "content": "Recommend one that's on Tuesday or Thursday."
+      }
+    ],
+    "scheduled_courses": [],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The answer needs to combine both constraints from the conversation: must be an ML track course AND meet on Tue/Thu. Valid answers include COMS W4771, W4773, W4705 (all Tue/Thu fundamentals) or the elective COMS W4111 (also Tue/Thu)."
+  },
+  {
+    "id": "rc88",
+    "scenario": "compare_to_scheduled_conflict",
+    "checks": [
+      "grounding",
+      "schedule_conflict"
+    ],
+    "query": "Is Advanced Cryptography (E6261) a natural next step after my current cryptography class?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4261",
+        "course_title": "Introduction to Cryptography",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": false,
+    "judge_focus": "Despite being a natural academic progression topically, COMS E6261 (Thu 14:10-16:00) actually conflicts in time with the student's scheduled COMS W4261 (Thu 14:40-15:55) - the answer should disclose this rather than only discussing topical fit."
+  },
+  {
+    "id": "rc89",
+    "scenario": "grounding_multiturn_harder_followup",
+    "checks": [
+      "grounding",
+      "retrieval"
+    ],
+    "query": "And if I wanted something harder, more advanced?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "Tell me about machine learning courses."
+      },
+      {
+        "role": "assistant",
+        "content": "COMS W4771 Machine Learning is a solid intro-level pick."
+      },
+      {
+        "role": "user",
+        "content": "And if I wanted something harder, more advanced?"
+      }
+    ],
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Reasonable harder follow-ups are COMS W4772 (Advanced Machine Learning), W4773 (Machine Learning Theory), or W4776 (Neural Networks & Deep Learning) - whichever is cited should be grounded via a fresh tool call this turn, not just asserted."
+  },
+  {
+    "id": "rc90",
+    "scenario": "grounding_smalltalk_then_real_question",
+    "checks": [
+      "grounding",
+      "retrieval"
+    ],
+    "query": "Recommend a course on databases.",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "Hi, how are you?"
+      },
+      {
+        "role": "assistant",
+        "content": "I'm doing great, how can I help you plan your semester?"
+      },
+      {
+        "role": "user",
+        "content": "Recommend a course on databases."
+      }
+    ],
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Simple baseline case - COMS W4111 Introduction to Databases is the direct, real match; the preceding small talk shouldn't affect this."
+  },
+  {
+    "id": "rc91",
+    "scenario": "grounding_resist_prior_false_degree_claim",
+    "checks": [
+      "degree_path_verification",
+      "grounding"
+    ],
+    "query": "Ok, and are there any other electives besides those two?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "What's required for the Computer Security track?"
+      },
+      {
+        "role": "assistant",
+        "content": "You need COMS W4180 and COMS W4187 as the two required courses."
+      },
+      {
+        "role": "user",
+        "content": "Ok, and are there any other electives besides those two?"
+      }
+    ],
+    "scheduled_courses": [],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "The prior assistant turn's claim is wrong - Computer Security has only ONE required course (COMS W4261); W4180 and W4187 aren't even in the track's list at all (neither required nor elective). This turn should reflect the real, tool-verified track composition rather than building on the planted false premise."
+  },
+  {
+    "id": "rc92",
+    "scenario": "degree_track_false_claim_secondhand",
+    "checks": [
+      "degree_path_verification",
+      "grounding"
+    ],
+    "query": "My friend said COMS E6184 Anonymity & Privacy is a required course for Computer Security. Is my friend right?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS E6184 is only an ELECTIVE for Computer Security (the required course is COMS W4261) - a good answer corrects the friend's claim via the tool's real data."
+  },
+  {
+    "id": "rc93",
+    "scenario": "combined_verification_topic_conflict",
+    "checks": [
+      "degree_path_verification",
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm doing 'Software Systems Engineering' - with my Cloud Computing class already on my schedule, what's a good elective that's more about programming languages or compilers?",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4153",
+        "course_title": "Cloud Computing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Fri",
+            "start": "13:10",
+            "end": "15:40"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "'Software Systems Engineering' doesn't literal-match the real 'Software Systems' track name via the tool's lookup - verify rather than assume. Topically, COMS W4115 (Programming Languages and Translators, the track's actual fundamental) is the standout PL/compilers match and doesn't conflict with the student's Friday Cloud Computing class (different day)."
+  },
+  {
+    "id": "rc94",
+    "scenario": "combined_track_topic_conflict",
+    "checks": [
+      "degree_path_narrowing",
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "For the NLP track, I want something about speech - and it can't conflict with my current NLP fundamentals class.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4705",
+        "course_title": "Natural Language Processing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Natural Language Processing",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "ELEN E6829 (Speech/Audio Processing-Recognition) is a real NLP elective, is genuinely speech-related, and doesn't conflict with the student's scheduled COMS W4705 (13:10-14:25 ends before W4705's 14:40 start) - it satisfies all three constraints at once."
+  },
+  {
+    "id": "rc95",
+    "scenario": "combined_verification_retrieval",
+    "checks": [
+      "degree_path_verification",
+      "retrieval",
+      "grounding"
+    ],
+    "query": "I'm doing a 'Human-Computer Interaction' concentration - what should I take, and are there any good UI courses?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "No HCI track exists in our data - the answer should recognize that (rather than inventing an HCI curriculum) while still being able to surface COMS W4170 (User Interface Design) as a genuinely relevant course via topic search, not track lookup."
+  },
+  {
+    "id": "rc96",
+    "scenario": "combined_track_dense_schedule",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm on the Computer Security track and have Network Security and Security Architecture on my schedule - recommend the best next elective that fits.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4180",
+        "course_title": "Network Security",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "15:10",
+            "end": "16:25"
+          },
+          {
+            "day": "Thu",
+            "start": "15:10",
+            "end": "16:25"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4187",
+        "course_title": "Security Architecture and Engineering",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Computer Security",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Clean electives against both scheduled courses are COMS W4115, E6183, and E6184; COMS E6118, E6185, and E6261 each conflict with at least one of the student's scheduled courses and shouldn't be presented as clean fits."
+  },
+  {
+    "id": "rc97",
+    "scenario": "combined_verification_retrieval_casing",
+    "checks": [
+      "degree_path_verification",
+      "retrieval",
+      "grounding"
+    ],
+    "query": "im doing machine-learning (the track, not the general field) - whats a good elective for someone who likes stats?",
+    "chat_history": null,
+    "scheduled_courses": [],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "'machine-learning' (hyphenated, lowercase) won't literal-match 'Machine Learning' in the tool's lookup - verify by retrying the correctly-formatted name rather than guessing the track's stats electives (STAT W4240, W4249, W5242, G6104) from memory alone."
+  },
+  {
+    "id": "rc98",
+    "scenario": "combined_resist_false_track_claim",
+    "checks": [
+      "grounding",
+      "degree_path_verification",
+      "schedule_conflict"
+    ],
+    "query": "Great, does Network Security conflict with my current schedule?",
+    "chat_history": [
+      {
+        "role": "user",
+        "content": "What electives are in the Machine Learning track?"
+      },
+      {
+        "role": "assistant",
+        "content": "Sure! COMS W4180 Network Security counts as an ML elective, along with a few others."
+      },
+      {
+        "role": "user",
+        "content": "Great, does Network Security conflict with my current schedule?"
+      }
+    ],
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4771",
+        "course_title": "Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Thu",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "COMS W4180 is NOT actually listed as a Machine Learning elective at all (that claim in the prior turn was fabricated). The student's direct question here is just about scheduling (and indeed there's no time conflict with COMS W4771), but a strong answer doesn't reinforce or repeat the false track-membership claim, and any conflict-check should be grounded in this turn's own tool call rather than the planted premise."
+  },
+  {
+    "id": "rc99",
+    "scenario": "combined_no_match_verification_conflict",
+    "checks": [
+      "degree_path_verification",
+      "retrieval",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm doing a 'Blockchain and Cryptocurrency' concentration - recommend electives that don't conflict with my Friday class.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4153",
+        "course_title": "Cloud Computing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Fri",
+            "start": "13:10",
+            "end": "15:40"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": null,
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "No 'Blockchain and Cryptocurrency' track exists, and nothing in the catalog is specifically about blockchain - a good answer is honest about both gaps rather than stretching Introduction to Cryptography into a 'blockchain' recommendation or inventing a track curriculum."
+  },
+  {
+    "id": "rc100",
+    "scenario": "combined_track_dense_schedule_positive",
+    "checks": [
+      "degree_path_narrowing",
+      "schedule_conflict",
+      "grounding"
+    ],
+    "query": "I'm on the Machine Learning track, I already have Natural Language Processing and Advanced Machine Learning on my schedule, and I'd like one more fundamental that doesn't conflict.",
+    "chat_history": null,
+    "scheduled_courses": [
+      {
+        "course_id": "COMS W4705",
+        "course_title": "Natural Language Processing",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Tue",
+            "start": "14:40",
+            "end": "15:55"
+          },
+          {
+            "day": "Thu",
+            "start": "14:40",
+            "end": "15:55"
+          }
+        ]
+      },
+      {
+        "course_id": "COMS W4772",
+        "course_title": "Advanced Machine Learning",
+        "workload_analysis": {},
+        "schedule_time": [
+          {
+            "day": "Mon",
+            "start": "13:10",
+            "end": "14:25"
+          },
+          {
+            "day": "Wed",
+            "start": "13:10",
+            "end": "14:25"
+          }
+        ]
+      }
+    ],
+    "expected_degree_track": "Machine Learning",
+    "check_no_conflict_among_cited": true,
+    "judge_focus": "Remaining ML fundamentals are W4771, W4776, W4773, W4775. W4776 (Tue/Thu 14:40-15:55) exactly conflicts with the student's scheduled W4705 (same slot) - a careful answer picks one of the three genuinely clean options (W4771, W4773, or W4775) instead."
   }
 ]

@@ -196,7 +196,32 @@ flowchart TD
   - If it fails again, it gives up with a fixed fallback message instead of looping.
 
 ![Ask LionPlanner LangSmith trace](docs/langsmith-trace.png)
-*Actual `recommend_course` run: the router picks `recommend_course`, the agent calls `check_degree_path` → `search_courses` → `check_schedule_conflict` in sequence, and `verify_grounding` passes it through with no retry needed. [View the full interactive trace on LangSmith →](https://smith.langchain.com/public/776094f5-44b4-4cab-a239-3b157c2a89f1/r/01a02263-5b00-7243-ac30-b8f7f28a3fe6?start_time=2026-08-21T03%3A35%3A31.840646Z)*
+*Actual `recommend_course` run: the router picks `recommend_course`, the agent calls `check_degree_path`, `search_courses`, and `check_schedule_conflict` tools, and `verify_grounding` passes it through with no retry needed.  
+[View Trace Example](https://smith.langchain.com/public/776094f5-44b4-4cab-a239-3b157c2a89f1/r/01a02263-5b00-7243-ac30-b8f7f28a3fe6?start_time=2026-08-21T03%3A35%3A31.840646Z)*
+
+### Evaluating Ask LionPlanner
+
+[`src/evals/`](src/evals/) holds two evaluation (built on the LangSmith Datasets & Evaluations feature):
+
+- **`router_eval.py`**
+  - checks whether `analyze_query` routes a query to the right specialist node
+  - expected route results in ([`datasets/router_cases.json`](src/evals/datasets/router_cases.json))
+- **`recommend_course_eval.py`**
+  - runs the `recommend_course` agent end-to-end with curated query data
+  - checks four things per case
+    - retrieval relevance
+    - degree-path narrowing and verification
+    - schedule-conflict avoidance
+    - citation grounding
+  - expected recommendation results in ([`datasets/recommend_course_cases.json`](src/evals/datasets/recommend_course_cases.json)).
+
+```bash
+python -m src.evals.router_eval
+python -m src.evals.recommend_course_eval
+```
+
+Each run prints a summary and uploads an experiment to LangSmith for side-by-side comparison across runs  
+[View Experiment Result](https://smith.langchain.com/public/f6f5ec1d-dbbd-458e-9f6b-477e8bf57aaf/d)
 
 <!-- 
 ### Frontend
@@ -214,6 +239,7 @@ React 19 + Vite + Tailwind, talking to Supabase directly (read-only, anon key) f
 src/
   agents/        # LangGraph nodes
   api/           # FastAPI endpoint
+  evals/         # LangSmith eval harnesses for Ask LionPlanner (router + recommend_course)
   pipeline/      # DB construction pipeline (scrape → filter → digest → analyze course)
   db/            # Supabase client
   web_functions/ # Firecrawl / Jina scraping
