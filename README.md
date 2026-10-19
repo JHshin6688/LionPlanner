@@ -21,7 +21,7 @@ To answer "how much work is this course", students must leave the registration s
 ## Recognition
 
 🏆 Selected as a Featured Project from the
-[Pathfinders Challenge 2026](https://www.stellic.com/pathfinders)
+[Pathfinders Challenge 2026](https://www.stellic.com/pathfinders) 
 
 ## Key Features
 
