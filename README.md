@@ -18,6 +18,11 @@ To answer "how much work is this course", students must leave the registration s
 
 **LionPlanner pulls all of that into one place: a scheduling tool where syllabus content, instructor reviews, workload analysis, schedule conflicts, and degree-path fit are all one chat message away**
 
+## Recognition
+
+🏆 Selected as a Featured Project from the
+[Pathfinders Challenge 2026](https://www.stellic.com/pathfinders)
+
 ## Key Features
 
 - **Built on real Columbia data** — course syllabi and reviews sourced from CULPA, the review site Columbia students actually use.
